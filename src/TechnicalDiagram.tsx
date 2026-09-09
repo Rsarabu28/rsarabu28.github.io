@@ -98,7 +98,7 @@ export default function TechnicalDiagram({
             </text>
           </g>
         ))}
-        <rect x="154" y="112" width="105" height="23" fill="#202320" />
+        <rect x="154" y="112" width="105" height="23" fill="#F4F4F4" />
         <text
           x="207"
           y="128"
@@ -127,7 +127,7 @@ export default function TechnicalDiagram({
           <path
             d="M20 0H0V20"
             fill="none"
-            stroke="#a9b9e3"
+            stroke="#111111"
             strokeOpacity=".13"
             strokeWidth=".5"
           />
@@ -141,8 +141,8 @@ export default function TechnicalDiagram({
         width="55"
         height="64"
         rx="3"
-        fill="#47526c"
-        stroke="#7482a3"
+        fill="#DCDCDC"
+        stroke="#8A8A8A"
         strokeWidth=".7"
       />
       <rect
@@ -151,14 +151,14 @@ export default function TechnicalDiagram({
         width="46"
         height="56"
         rx="3"
-        fill="#47526c"
-        stroke="#7482a3"
+        fill="#DCDCDC"
+        stroke="#8A8A8A"
         strokeWidth=".7"
       />
       <path
         d="M65 120L104 90L124 47L207 47L226 90L302 103L335 35"
         fill="none"
-        stroke="#b9caf8"
+        stroke="#111111"
         strokeWidth="2"
         strokeDasharray="4 4"
       />
@@ -171,14 +171,14 @@ export default function TechnicalDiagram({
         [302, 103],
         [335, 35],
       ].map(([x, y]) => (
-        <circle key={x} cx={x} cy={y} r="3" fill="#c3d2f5" />
+        <circle key={x} cx={x} cy={y} r="3" fill="#111111" />
       ))}
       <circle
         cx="335"
         cy="35"
         r="8"
         fill="none"
-        stroke="#d1e8aa"
+        stroke="#8A8A8A"
         strokeWidth="1"
       />
       <text x="368" y="148" className="diagram-annotation">

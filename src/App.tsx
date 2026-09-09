@@ -16,9 +16,10 @@ import {
   ArrowUpRight,
   Check,
   CircleDot,
-  CodeXml,
   CookingPot,
   Copy,
+  FileText,
+  MapPin,
   Dumbbell,
   Mail,
   Menu,
@@ -31,6 +32,13 @@ import {
   X,
 } from "lucide-react";
 import ArmDemo from "./ArmDemo";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  LinkIcon,
+  OrganizationIcon,
+  ProjectIcon,
+} from "./Icons";
 import ProjectVisual from "./ProjectVisual";
 import ProjectDemo from "./ProjectDemo";
 import ProjectGallery from "./ProjectGallery";
@@ -60,7 +68,7 @@ function ContactLinks({
           rel="noreferrer"
           aria-label="GitHub"
         >
-          <CodeXml size={18} />
+          <GithubIcon size={18} />
           {labels && "GitHub"}
           {labels && <ArrowUpRight size={14} />}
         </a>
@@ -72,9 +80,7 @@ function ContactLinks({
           rel="noreferrer"
           aria-label="LinkedIn"
         >
-          <span className="social-in" aria-hidden="true">
-            in
-          </span>
+          <LinkedinIcon size={18} />
           {labels && "LinkedIn"}
           {labels && <ArrowUpRight size={14} />}
         </a>
@@ -138,7 +144,7 @@ function Header() {
           rel="noreferrer"
           className="resume-link"
         >
-          Résumé <ArrowUpRight size={15} />
+          <FileText size={15} /> Résumé <ArrowUpRight size={15} />
         </a>
       </div>
     </header>
@@ -187,7 +193,9 @@ function ProjectCard({
       <ProjectVisual project={project} />
       <div className="project-card-copy">
         <div className="project-meta">
-          <span>{project.category}</span>
+          <span>
+            <ProjectIcon visual={project.visual} size={14} /> {project.category}
+          </span>
           <span>{project.year}</span>
         </div>
         <div className="project-title-line">
@@ -285,16 +293,13 @@ function Home() {
           </div>
           <div className="hero-meta">
             <div className="hero-location">
-              <span className="location-dot" /> Pittsburgh, PA{" "}
+              <MapPin size={12} aria-hidden="true" /> Pittsburgh, PA{" "}
               <span className="location-divider">/</span> Class of 2027
             </div>
             <span className="availability">
               <span className="live-dot" /> Open to work
             </span>
           </div>
-        </div>
-        <div className="hero-playground">
-          <ArmDemo />
         </div>
       </section>
       <div className="hero-baseline">
@@ -355,7 +360,9 @@ function Home() {
               className="experience-preview-row"
               key={entry.organization}
             >
-              <span className="organization-mark">{entry.shortName}</span>
+              <span className="organization-mark" aria-label={entry.organization}>
+                <OrganizationIcon shortName={entry.shortName} />
+              </span>
               <div>
                 <h3>{entry.organization}</h3>
                 <p>{entry.role}</p>
@@ -421,7 +428,7 @@ function Projects() {
           </div>
           <span className="section-aside">2023 to 2026</span>
         </div>
-        <div className="project-grid">
+        <div className="project-grid project-grid-index">
           {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
@@ -448,7 +455,9 @@ function Experience() {
         {experience.map((entry) => (
           <article className="experience-entry" key={entry.organization}>
             <div className="experience-identity">
-              <span className="organization-mark">{entry.shortName}</span>
+              <span className="organization-mark" aria-label={entry.organization}>
+                <OrganizationIcon shortName={entry.shortName} />
+              </span>
               <p className="eyebrow">{entry.category}</p>
               <h2>{entry.organization}</h2>
               <p className="experience-role">{entry.role}</p>
@@ -665,7 +674,8 @@ function TrikeMedia() {
         target="_blank"
         rel="noreferrer"
       >
-        Open video on YouTube <ArrowUpRight size={15} />
+        <LinkIcon url="https://www.youtube.com" /> Open video on YouTube{" "}
+        <ArrowUpRight size={15} />
       </a>
     </section>
   );
@@ -738,7 +748,8 @@ function ProjectDetail() {
               rel="noreferrer"
               className="text-link"
             >
-              {link.label} <ArrowUpRight size={15} />
+              <LinkIcon url={link.url} /> {link.label}{" "}
+              <ArrowUpRight size={15} />
             </a>
           ))}
         </aside>

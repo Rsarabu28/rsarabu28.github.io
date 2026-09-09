@@ -515,7 +515,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
                 />
               </g>
             ))}
-            <circle cx={origin.x} cy={origin.y} r="3" fill="#c4b5fd" />
+            <circle cx={origin.x} cy={origin.y} r="3" fill="#111111" />
             {target && (
               <circle
                 cx={origin.x + target.x}
@@ -528,7 +528,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               cx={origin.x + tip.x}
               cy={origin.y - tip.y}
               r="5"
-              fill="#d4f6a5"
+              fill="#111111"
             />
             {lengths.map((_, i) => (
               <text
