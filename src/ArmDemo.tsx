@@ -97,7 +97,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
         worker.terminate();
         workerRef.current = null;
         fail(
-          "No path found within the search limit. Try another target or move a block.",
+          "No path found within the search limit. Try another target or move an obstacle.",
         );
       }, 7000);
       worker.onerror = () => {
@@ -121,12 +121,12 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
             reason === "outside-reach"
               ? "No path found. That point is outside the arm’s reach."
               : reason === "target-blocked"
-                ? "No path found. The target is too close to a block."
+                ? "No path found. The target is too close to an obstacle."
                 : reason === "invalid-start"
-                  ? "No path found. Move the block that overlaps the arm."
+                  ? "No path found. Move the obstacle that overlaps the arm."
                   : reason === "error"
                     ? "The planner ran into a problem. Try another target."
-                    : "No path found within the search limit. Try another target or move a block.",
+                    : "No path found within the search limit. Try another target or move an obstacle.",
           );
           return;
         }
@@ -181,7 +181,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
     if (value === count) return;
     const pose = findHomeConfiguration(value, obstacles);
     if (!pose) {
-      setWarning("Move or remove a block to make room for the new arm.");
+      setWarning("Move or remove an obstacle to make room for the new arm.");
       return;
     }
     cancel();
@@ -221,7 +221,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
   const commitBlock = (box: Obstacle) => {
     const scene = [...obstacles.filter((o) => o.id !== box.id), box];
     if (!configurationValid(anglesRef.current, lengths, scene)) {
-      setWarning("That block overlaps the arm. Place it in a clear spot.");
+      setWarning("That obstacle overlaps the arm. Place it in a clear spot.");
       return;
     }
     setObstacles(scene);
@@ -231,7 +231,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
   };
   const placeBlock = (point: Point) => {
     if (obstacles.length >= 6) {
-      setWarning("Use up to six blocks. Remove one to add another.");
+      setWarning("Use up to six obstacles. Remove one to add another.");
       return;
     }
     stopForEdit();
@@ -316,7 +316,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
           role="group"
           aria-label="Number of arm links"
         >
-          <span>Links</span>
+          <span>Arm links</span>
           {[2, 3, 4].map((n) => (
             <button
               key={n}
@@ -336,11 +336,11 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
             svgRef.current?.focus();
           }}
         >
-          <Plus size={14} /> Add block
+          <Plus size={14} /> Add obstacle
         </button>
         <button
           className="remove-block"
-          aria-label="Remove selected block"
+          aria-label="Remove selected obstacle"
           disabled={!selected}
           onClick={() => selected && removeBlock(selected)}
         >
@@ -354,7 +354,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
           className="arm-svg"
           role="group"
           tabIndex={0}
-          aria-label="Robot arm playground. Click to set a target, or use arrow keys. Add blocks to plan around."
+          aria-label="Robot arm playground. Click to set a target, or use arrow keys. Add obstacles to plan around."
           onPointerDown={(event) => {
             if (event.button !== 0) return;
             if (placeMode) placeBlock(worldPoint(event));
@@ -430,7 +430,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
           />
           <text x="28" y="310" className="plot-label">
             {placeMode
-              ? "CLICK TO PLACE A BLOCK"
+              ? "CLICK TO PLACE AN OBSTACLE"
               : phase === "planning"
                 ? "FINDING A PATH…"
                 : "CLICK TO SET A TARGET"}
@@ -451,7 +451,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               key={box.id}
               role="button"
               tabIndex={0}
-              aria-label={`Block ${i + 1}. Drag to move, use arrow keys, or press Delete to remove.`}
+              aria-label={`Obstacle ${i + 1}. Drag to move, use arrow keys, or press Delete to remove.`}
               className={`planner-obstacle ${selected === box.id || draft?.id === box.id ? "selected" : ""}`}
               onPointerDown={(event) => startDrag(event, box)}
               onFocus={() => setSelected(box.id)}
@@ -567,10 +567,10 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
       </div>
       <p className="planner-hint">
         {placeMode
-          ? "Click to place a block. Arrow keys and Enter work too."
+          ? "Click to place an obstacle. Arrow keys and Enter work too."
           : selected
-            ? "Drag the block to move it, or use the bin to remove it."
-            : "Click a target. Add a block to give the arm a detour."}
+            ? "Drag the obstacle to move it, or use the bin to remove it."
+            : "Click a target. Add an obstacle to give the arm a detour."}
       </p>
     </div>
   );

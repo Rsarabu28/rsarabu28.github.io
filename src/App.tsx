@@ -16,10 +16,9 @@ import {
   ArrowUpRight,
   Check,
   CircleDot,
+  CodeXml,
   CookingPot,
   Copy,
-  FileText,
-  MapPin,
   Dumbbell,
   Mail,
   Menu,
@@ -30,13 +29,6 @@ import {
   X,
 } from "lucide-react";
 import ArmDemo from "./ArmDemo";
-import {
-  GithubIcon,
-  LinkedinIcon,
-  LinkIcon,
-  OrganizationIcon,
-  ProjectIcon,
-} from "./Icons";
 import ProjectVisual from "./ProjectVisual";
 import ProjectDemo from "./ProjectDemo";
 import ProjectGallery from "./ProjectGallery";
@@ -67,7 +59,7 @@ function ContactLinks({
           rel="noreferrer"
           aria-label="GitHub"
         >
-          <GithubIcon size={18} />
+          <CodeXml size={18} />
           {labels && "GitHub"}
           {labels && <ArrowUpRight size={14} />}
         </a>
@@ -79,7 +71,9 @@ function ContactLinks({
           rel="noreferrer"
           aria-label="LinkedIn"
         >
-          <LinkedinIcon size={18} />
+          <span className="social-in" aria-hidden="true">
+            in
+          </span>
           {labels && "LinkedIn"}
           {labels && <ArrowUpRight size={14} />}
         </a>
@@ -143,7 +137,7 @@ function Header() {
           rel="noreferrer"
           className="resume-link"
         >
-          <FileText size={15} /> Résumé <ArrowUpRight size={15} />
+          Résumé <ArrowUpRight size={15} />
         </a>
       </div>
     </header>
@@ -197,9 +191,7 @@ function ProjectCard({
       </div>
       <div className="project-card-copy">
         <div className="project-meta">
-          <span>
-            <ProjectIcon visual={project.visual} size={14} /> {project.category}
-          </span>
+          <span>{project.category}</span>
           <span>{project.year}</span>
         </div>
         <div className="project-title-line">
@@ -246,9 +238,9 @@ function SectionHeading({
   );
 }
 
-function CurrentProjects({ indexPage = false }: { indexPage?: boolean }) {
+function CurrentProjects() {
   return (
-    <div className={`project-grid ${indexPage ? "project-grid-index" : ""}`}>
+    <div className="project-grid">
       {inProgress.map((project, index) => (
         <ProjectCard key={project.slug} project={project} index={index} />
       ))}
@@ -261,16 +253,17 @@ function Home() {
     <>
       <section className="home-hero">
         <div className="hero-copy">
-          <p className="hero-intro">I’m Ray Sarabu!</p>
+          <p className="hero-intro">
+            I’m Ray Sarabu, an ECE + Robotics student at Carnegie Mellon.
+          </p>
           <h1>
             What I’ve been
             <br />
             <span>working on.</span>
           </h1>
           <p className="hero-description">
-            I’m an ECE and Robotics student at Carnegie Mellon. Take a look
-            around for photos, demos, and details about how each of my projects
-            came together.
+            I build robotic systems across embedded software, controls,
+            electronics, and mechanical hardware.
           </p>
           <div className="hero-actions">
             <Link to="/projects" className="button-primary">
@@ -280,13 +273,16 @@ function Home() {
           </div>
           <div className="hero-meta">
             <div className="hero-location">
-              <MapPin size={12} aria-hidden="true" /> Pittsburgh, PA{" "}
+              <span className="location-dot" /> Pittsburgh, PA{" "}
               <span className="location-divider">/</span> Class of 2027
             </div>
             <span className="availability">
-              <span className="live-dot" /> Open to work
+              <span className="live-dot" /> Seeking 2027 robotics roles
             </span>
           </div>
+        </div>
+        <div className="hero-playground">
+          <ArmDemo compact />
         </div>
       </section>
       <div className="hero-baseline">
@@ -331,7 +327,7 @@ function Home() {
                 title={project.visual === "ev" ? "Electric Trike" : project.name}
                 summary={
                   project.visual === "ev"
-                    ? "An enclosed electric trike I designed and built, from the frame and drivetrain to the electronics."
+                    ? "I designed and built an enclosed electric trike end to end, including the custom frame, drivetrain, and 48 V electrical system."
                     : project.summary
                 }
               />
@@ -352,12 +348,11 @@ function Home() {
               className="experience-preview-row"
               key={entry.organization}
             >
-              <span className="organization-mark" aria-label={entry.organization}>
-                <OrganizationIcon shortName={entry.shortName} />
-              </span>
-              <div>
+              <span className="organization-mark">{entry.shortName}</span>
+              <div className="experience-preview-copy">
                 <h3>{entry.organization}</h3>
                 <p>{entry.role}</p>
+                <p className="experience-highlight">{entry.highlight}</p>
               </div>
               <span className="experience-date">{entry.dates}</span>
               <ArrowUpRight size={20} />
@@ -409,7 +404,7 @@ function Projects() {
             <h2 id="in-progress-heading">In progress</h2>
           </div>
         </div>
-        <CurrentProjects indexPage />
+        <CurrentProjects />
       </section>
       <section
         className="past-projects"
@@ -421,7 +416,7 @@ function Projects() {
           </div>
           <span className="section-aside">2023 to 2026</span>
         </div>
-        <div className="project-grid project-grid-index">
+        <div className="project-grid">
           {pastProjects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
@@ -448,9 +443,7 @@ function Experience() {
         {experience.map((entry) => (
           <article className="experience-entry" key={entry.organization}>
             <div className="experience-identity">
-              <span className="organization-mark" aria-label={entry.organization}>
-                <OrganizationIcon shortName={entry.shortName} />
-              </span>
+              <span className="organization-mark">{entry.shortName}</span>
               <p className="eyebrow">{entry.category}</p>
               <h2>{entry.organization}</h2>
               <p className="experience-role">{entry.role}</p>
@@ -667,8 +660,7 @@ function TrikeMedia() {
         target="_blank"
         rel="noreferrer"
       >
-        <LinkIcon url="https://www.youtube.com" /> Open video on YouTube{" "}
-        <ArrowUpRight size={15} />
+        Open video on YouTube <ArrowUpRight size={15} />
       </a>
     </section>
   );
@@ -714,7 +706,7 @@ function ProjectDetail() {
             <h2>Try moving the arm</h2>
             <p>
               Choose two, three, or four links, then click a target. You can
-              add blocks and drag them around to change the route.
+              add obstacles and drag them around to change the route.
             </p>
             <small>
               The class project was a working two-link robot. I was curious
@@ -744,8 +736,7 @@ function ProjectDetail() {
               rel="noreferrer"
               className="text-link"
             >
-              <LinkIcon url={link.url} /> {link.label}{" "}
-              <ArrowUpRight size={15} />
+              {link.label} <ArrowUpRight size={15} />
             </a>
           ))}
         </aside>

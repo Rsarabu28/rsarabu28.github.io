@@ -71,9 +71,8 @@ Fonts: self-hosted Inter Tight via Fontsource (SIL Open Font License). Interface
 - Removed the site-generated Argus and capstone pipeline schematics. Other projects retain their supporting diagrams and interactive demonstrations.
 
 
-## PR #1 integration
+## Layout restoration and selected critique · September 9, 2026
 
-- Merged the gallery-white redesign from `719a8cc` with the approved project polish at `2d88e21`. The PR supplies Inter Tight, the neutral palette, new brand/project icons, open project panels, a text-led homepage, and updated PCB framing.
-- Project data and project media remain from `2d88e21`: both in-progress case studies, their shorter clickable previews, source attribution, and the original capstone brief framing are retained. The arm playground remains on its project page, following the PR’s layout.
-- Integration adds Argus and capstone to the PR’s icon map, adapts image and metadata wrappers to the new layout, and retains consistent hover/focus timing and reduced-motion support. Muted text is darkened slightly for legibility against white and light-gray backgrounds.
-- The separate video-reference color experiment remains in a Git stash and was not used as the merge source.
+- Restored the approved `2d88e21` layouts and interactions while retaining the Inter Tight font and white, gray, and black palette from PR #1. The separate video-reference theme remains stashed.
+- The user selected main sections 1, 2, 4, 5, 6, and 10 of the [shared critique](https://chatgpt.com/s/t_6aa1ea4b9b3081918b495fe92284b8c2): hero copy, homepage arm sizing and labels, personal contributions and results in project details, trike engineering scope, experience highlights, and mobile spacing. Other proposed redesigns are excluded.
+- The added copy uses the existing résumé, knee project overview, PCB evidence, and trike build footage documented above. No speed, range, torque, or clinical-performance figures were inferred from the critique's example placeholders.

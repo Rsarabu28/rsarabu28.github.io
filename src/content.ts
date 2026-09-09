@@ -70,6 +70,8 @@ export const experience = [
     category: "Industry · ADAS",
     summary:
       "I worked on tools for checking and visualizing vehicle sensor systems.",
+    highlight:
+      "Built a 76-check ADAS checkout tool and LiDAR–camera visualization tools.",
     contributions: [
       {
         title: "Vehicle checkout",
@@ -95,6 +97,8 @@ export const experience = [
     category: "Research · Wearable robotics",
     summary:
       "At MetaMobility, or MeMo, I worked on hardware and embedded control systems for the lab’s knee exoskeleton.",
+    highlight:
+      "Developed custom PCBs, embedded electronics, and controls for the lab’s knee exoskeleton.",
     contributions: [
       {
         title: "Prototype development",
@@ -246,7 +250,7 @@ export const projects: Project[] = [
     year: "2025–26",
     visual: "exo",
     summary:
-      "A wearable knee-assistance device I helped develop, including its mechanical hardware, custom PCBs, and embedded control.",
+      "I designed custom PCBs and developed embedded control and mechanical hardware for a research knee exoskeleton at CMU.",
     tags: ["PCB design", "Embedded systems", "Controls"],
     photos: [
       {
@@ -270,10 +274,14 @@ export const projects: Project[] = [
     ],
     context: "CMU MetaMobility Lab · Collaborative research",
     overview:
-      "The knee exoskeleton is a wearable device developed at CMU’s MetaMobility Lab, also known as MeMo, to assist knee flexion and extension during walking. I worked with the team on the mechanical prototypes, embedded electronics, and gait control, and designed custom PCBs for the thigh controller and shank sensor.",
+      "The knee exoskeleton is a wearable device developed at CMU’s MetaMobility Lab, also known as MeMo, to assist knee flexion and extension during walking. The system combines mechanical support, joint actuation, inertial sensing, and embedded control to guide assistance through a gait cycle.",
     sections: [
       {
-        title: "Hardware development",
+        title: "My role",
+        text: "I designed the custom thigh-controller and shank-sensor PCBs, integrated embedded sensing and motor control, and worked with the team on mechanical prototypes and gait control across four hardware generations.",
+      },
+      {
+        title: "Hardware integration and iteration",
         text: "I designed and tested hardware across four prototype generations. We revised the frame, cuffs, anchoring, and electronics packaging to improve how the device transfers torque and fits on the wearer.",
       },
       {
@@ -287,6 +295,10 @@ export const projects: Project[] = [
       {
         title: "Shank sensor board",
         text: "I also designed a separate board around the ICM-20948 IMU. It includes a 1.8 V regulator and level shifting, with SPI signals carried through a CAT6 cable to the main controller. Keeping the sensor electronics on the shank lets the control system use measurements from both parts of the leg.",
+      },
+      {
+        title: "Results and hardware revisions",
+        text: "The team built four functional prototype generations. The gallery shows the wearable hardware from the 2025 project overview, and the PCB images below document later electronics design revisions. These revisions bring the controller, sensors, and power connections onto dedicated boards.",
       },
     ],
     facts: [
@@ -402,21 +414,33 @@ export const projects: Project[] = [
     year: "2023–24",
     visual: "ev",
     summary:
-      "An enclosed electric trike and a drift cart that I designed, built, and drove.",
+      "I designed and built an enclosed electric trike and drift cart, covering CAD, frame fabrication, drivetrains, and 48 V electronics.",
     tags: ["CAD", "Fabrication", "Electronics"],
     context: "Personal projects · Ray’s Builds",
     overview:
-      "I built an enclosed recumbent trike and an electric drift cart in my own time. I worked on the CAD, frame construction, electronics, and assembly, using 48 V battery packs and motor controllers. I documented the trike build on my YouTube channel, Ray’s Builds.",
+      "I built an enclosed recumbent trike and an electric drift cart as personal projects. The trike brought mechanical design, fabrication, drivetrain integration, and electrical systems together in one working vehicle. I documented the build on my YouTube channel, Ray’s Builds.",
     sections: [
       {
-        title: "The recumbent trike",
-        text: "The trike has a custom frame and enclosure, with a battery, motor controller, and driver controls. The videos cover the build from the frame design through testing the finished vehicle.",
+        title: "My role: design through assembly",
+        text: "I took the trike from CAD and frame construction through electronics integration, assembly, and driving tests. Designing the enclosure and chassis together meant making the physical packaging, drivetrain, and driver controls work as one system.",
+      },
+      {
+        title: "Frame and drivetrain",
+        text: "I designed the custom frame and enclosure, fabricated and welded the frame, then integrated the drivetrain. The build footage below follows that progression from the CAD model to the welded chassis and drivetrain installation.",
+      },
+      {
+        title: "48 V electrical system",
+        text: "The builds use 48 V battery packs and motor controllers. I worked on the electrical integration and driver controls alongside the mechanical assembly, bringing the battery, controller, and motor into the completed vehicle.",
+      },
+      {
+        title: "Driving the finished builds",
+        text: "I built and drove both vehicles. The 61-second trike testing montage shows the completed prototype in motion; the accompanying build images document the earlier design and fabrication work.",
       },
     ],
     facts: [
       { value: "2 vehicles", label: "Personal builds" },
       { value: "48 V", label: "Battery packs" },
-      { value: "Design and assembly", label: "Project scope" },
+      { value: "CAD to driving tests", label: "End-to-end project scope" },
     ],
     links: [
       {
