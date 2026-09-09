@@ -234,11 +234,14 @@ function SectionHeading({
   );
 }
 
-function CurrentList() {
+function CurrentList({ detailed = false }: { detailed?: boolean }) {
   return (
     <div className="current-list">
       {currentProjects.map((project) => (
-        <article className="current-row" key={project.title}>
+        <article
+          className={detailed ? "current-row is-detailed" : "current-row"}
+          key={project.title}
+        >
           <span className="current-number">{project.number}</span>
           <div className="current-icon">
             {project.icon === "satellite" ? (
@@ -251,6 +254,38 @@ function CurrentList() {
             <span className="eyebrow">{project.category}</span>
             <h3>{project.title}</h3>
             <p>{project.description}</p>
+            {detailed && (
+              <>
+                <dl className="current-focus">
+                  {project.focus.map((item) => (
+                    <div key={item.title}>
+                      <dt>{item.title}</dt>
+                      <dd>{item.text}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+                {project.links && (
+                  <div className="current-links">
+                    {project.links.map((link) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-link"
+                      >
+                        {link.label} <ArrowUpRight size={15} />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </div>
           <span className="status-label">
             <span className="live-dot" /> In progress
@@ -409,7 +444,7 @@ function Projects() {
             <h2 id="in-progress-heading">In progress</h2>
           </div>
         </div>
-        <CurrentList />
+        <CurrentList detailed />
       </section>
       <section
         className="past-projects"
@@ -823,15 +858,13 @@ function ProjectDetail() {
               <TechnicalDiagram kind="balance" />
             </section>
           )}
-          {!project.demo && !project.photos && (
+          {!project.demo && !project.photos && project.visual !== "arm" && (
             <div className="detail-pending">
               <span className="eyebrow">COMING SOON</span>
               <p>
                 {project.visual === "ev"
                   ? "I’ll add drift cart photos and build details here."
-                  : project.visual === "exo"
-                    ? "I’ll add photos of the exoskeleton here."
-                    : "I’ll add footage of the original arm project here."}
+                  : "I’ll add photos of the exoskeleton here."}
               </p>
             </div>
           )}

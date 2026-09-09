@@ -403,20 +403,78 @@ export const projects: Project[] = [
   },
 ];
 
-export const currentProjects = [
+export type CurrentProject = {
+  number: string;
+  title: string;
+  category: string;
+  icon: "satellite" | "capstone";
+  description: string;
+  focus: { title: string; text: string }[];
+  tags: string[];
+  links?: { label: string; url: string }[];
+};
+
+export const currentProjects: CurrentProject[] = [
   {
     number: "01",
-    title: "Senior Capstone",
-    category: "ECE + Robotics",
-    description: "My senior capstone project. I’ll add the details soon.",
-    icon: "capstone",
+    title: "Argus 3 Nanosatellite",
+    category: "Space systems \u00b7 CMU 18-873",
+    icon: "satellite",
+    description:
+      "Argus is a CMU CubeSat that works out its own orbit from pictures of Earth, with no GPS and no help from the ground. I am on the simulation and agentic GNC half of the team, working on the localization model that turns a camera frame into a coordinate and on the simulator we need to test it in.",
+    focus: [
+      {
+        title: "Getting the localization model onto the Jetson",
+        text: "Localization is an image retrieval model: it embeds a camera frame and searches a database of geotagged Earth tiles for the closest match. The detection models already export to ONNX and TensorRT, but the retrieval model has no export path yet, so that is the piece I am working on. The plan is to trace the small 27M parameter model with a sample image, export a portable ONNX graph, convert it to TensorRT on the Jetson Orin Nano that flies as the payload computer, and then confirm accuracy actually survives the conversion.",
+      },
+      {
+        title: "Building the simulation to test in",
+        text: "The team has no closed loop simulator yet, and that is the thing everything else is waiting on. The plan is one 6-DOF dynamics engine as a single source of truth, orbit and attitude with J2 gravity, drag, and solar pressure, with SPICE handling ephemerides and frame conversions. On top of that we render what the spacecraft would actually see: star tracker views out of a star catalog, and Earth views from a geospatial engine so the pixel to ground geometry is exact and we know the right answer for every frame we feed the localizer.",
+      },
+      {
+        title: "Running agentic GNC against it",
+        text: "Once the loop closes, simulated frames go into localization and orbit determination, and the resulting commands go back into the dynamics engine and move the spacecraft. That is what the agentic GNC work needs in order to train and be validated at all, and it is what tells us where the model is actually costing the mission. The budget is tight in a way that makes this concrete: the camera and the Jetson are only powered for about ten minutes a cycle, so speed, accuracy, and model size are not separate goals, they trade against each other.",
+      },
+    ],
+    tags: [
+      "Computer vision",
+      "Jetson Orin",
+      "ONNX / TensorRT",
+      "6-DOF simulation",
+      "GNC",
+    ],
+    links: [
+      { label: "18-873 course page", url: "https://courses.ece.cmu.edu/18873" },
+      { label: "Argus on GitHub", url: "https://github.com/cmu-argus-2" },
+    ],
   },
   {
     number: "02",
-    title: "Argus Nanosatellite",
-    category: "Space systems",
+    title: "Robotics Capstone",
+    category: "ECE + Robotics \u00b7 2026\u201327",
+    icon: "capstone",
     description:
-      "I’m working with the Argus nanosatellite team. More details coming soon.",
-    icon: "satellite",
+      "A year long capstone with a problem picked and a name still to come. We want two robot arms that can work together to unpack a returned box of clothing, look the garment over, and pack it back up.",
+    focus: [
+      {
+        title: "Why this problem",
+        text: "The framing our team started from is that most apparel returned in the US never makes it back onto a shelf. Sorting, inspecting, and repackaging one garment by hand costs more than the garment is worth, so it goes to a landfill instead. We want to find out whether a pair of arms can run that loop cheaply enough to change the answer.",
+      },
+      {
+        title: "What the system has to do",
+        text: "Open the box, pull one article of clothing out of a pile, work out what it is, decide whether it has a flaw that should keep it out of stock, then fold it and pack it back. The manipulation is the hard part. Cloth has no fixed shape to grab, folding is still an open research problem, and two arms sharing one workspace have to agree on who is holding what.",
+      },
+      {
+        title: "What I want to get out of it",
+        text: "We are early, and honestly this is ambitious enough that a year may not be enough to finish it. What I am after is the practice: reinforcement learning and imitation learning for manipulation, moving a policy from simulation onto real hardware, vision models for classifying garments and spotting defects, and the coordination problem of two arms working on one object at the same time.",
+      },
+    ],
+    tags: [
+      "Bimanual manipulation",
+      "Reinforcement learning",
+      "Imitation learning",
+      "Sim to real",
+      "Deformable objects",
+    ],
   },
 ];
