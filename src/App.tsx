@@ -24,10 +24,8 @@ import {
   Menu,
   Music2,
   Play,
-  Satellite,
   Users,
   Volleyball,
-  Wrench,
   X,
 } from "lucide-react";
 import ArmDemo from "./ArmDemo";
@@ -185,7 +183,12 @@ function ProjectCard({
 }) {
   return (
     <Link to={`/projects/${project.slug}`} className="project-card group">
-      <ProjectVisual project={project} />
+      <div className="project-card-media">
+        <ProjectVisual project={project} />
+        {project.status === "in-progress" && (
+          <span className="status-label"><span className="live-dot" />In progress</span>
+        )}
+      </div>
       <div className="project-card-copy">
         <div className="project-meta">
           <span>{project.category}</span>
@@ -199,10 +202,10 @@ function ProjectCard({
         </div>
         <p>{summary}</p>
         <div className="project-tags">
-          {project.tags.map((tag) => (
+          {(project.previewTags ?? project.tags).map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
-          <span className="project-index">0{index + 1}</span>
+          <span className="project-index" aria-hidden="true">0{index + 1}</span>
         </div>
       </div>
     </Link>
@@ -235,54 +238,11 @@ function SectionHeading({
   );
 }
 
-function CurrentList({ detailed = false }: { detailed?: boolean }) {
+function CurrentProjects() {
   return (
-    <div className="current-list">
+    <div className="project-grid">
       {inProgress.map((project, index) => (
-        <Link
-          to={`/projects/${project.slug}`}
-          className={detailed ? "current-row is-detailed" : "current-row"}
-          key={project.slug}
-        >
-          <span className="current-number">0{index + 1}</span>
-          <div className="current-icon">
-            {project.icon === "satellite" ? (
-              <Satellite strokeWidth={1.4} size={25} />
-            ) : (
-              <Wrench strokeWidth={1.4} size={24} />
-            )}
-          </div>
-          <div className="current-copy">
-            <span className="eyebrow">{project.category}</span>
-            <div className="current-title-line">
-              <h3>{project.name}</h3>
-              <span className="project-arrow">
-                <ArrowUpRight size={20} />
-              </span>
-            </div>
-            <p>{detailed ? project.overview : project.summary}</p>
-            {detailed && (
-              <>
-                <dl className="current-focus">
-                  {project.sections.map((section) => (
-                    <div key={section.title}>
-                      <dt>{section.title}</dt>
-                      <dd>{section.text}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="project-tags">
-                  {project.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-          <span className="status-label">
-            <span className="live-dot" /> In progress
-          </span>
-        </Link>
+        <ProjectCard key={project.slug} project={project} index={index} />
       ))}
     </div>
   );
@@ -344,7 +304,7 @@ function Home() {
           to="/projects#in-progress"
           link="All in progress"
         />
-        <CurrentList />
+        <CurrentProjects />
       </section>
       <section className="home-previous-projects">
         <SectionHeading
@@ -442,7 +402,7 @@ function Projects() {
             <h2 id="in-progress-heading">In progress</h2>
           </div>
         </div>
-        <CurrentList detailed />
+        <CurrentProjects />
       </section>
       <section
         className="past-projects"
@@ -723,10 +683,13 @@ function ProjectDetail() {
           <span>.</span>
         </h1>
         <p>{project.summary}</p>
-        <div className="project-tags">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
+        <div className="detail-header-meta">
+          {project.status === "in-progress" && (
+            <span className="status-label"><span className="live-dot" />In progress</span>
+          )}
+          <div className="project-tags">
+            {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+          </div>
         </div>
       </header>
       {project.demo ? (
@@ -778,12 +741,12 @@ function ProjectDetail() {
         <div className="detail-story">
           <section>
             <h2>About the project</h2>
-            <p>{project.overview}</p>
+            {project.overview.split("\n\n").map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </section>
           {project.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
-              <p>{section.text}</p>
+              {section.text.split("\n\n").map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             </section>
           ))}
           {project.visual === "ev" && <TrikeMedia />}

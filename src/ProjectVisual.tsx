@@ -6,11 +6,10 @@ import {
   Activity,
   Zap,
   Play,
-  Satellite,
-  Wrench,
 } from "lucide-react";
 import { asset, type Project } from "./content";
 import TechnicalDiagram from "./TechnicalDiagram";
+import ProjectImage from "./ProjectImage";
 
 const diagrams = {
   exo: {
@@ -49,18 +48,6 @@ const diagrams = {
     icon: Zap,
     caption: "Ray’s Builds · Electric vehicles",
   },
-  argus: {
-    label: "VISION-BASED ORBIT DETERMINATION",
-    nodes: ["Frame", "Retrieve", "Fix"],
-    icon: Satellite,
-    caption: "Localization pipeline · Simplified",
-  },
-  capstone: {
-    label: "BIMANUAL MANIPULATION",
-    nodes: ["Unpack", "Identify", "Repack"],
-    icon: Wrench,
-    caption: "Handling pipeline · Simplified",
-  },
 };
 
 export default function ProjectVisual({
@@ -70,23 +57,16 @@ export default function ProjectVisual({
   project: Project;
   large?: boolean;
 }) {
-  const diagram = diagrams[project.visual];
-  const Icon = diagram.icon;
   if (project.photos?.length) {
     const photo = project.photos[0];
     return (
-      <div className="project-visual media-preview photo-preview">
+      <div className={`project-visual media-preview photo-preview photo-preview-${project.visual}`}>
         <div className="media-preview-frame">
-          <img
-            src={asset(photo.src)}
-            alt={photo.alt}
-            loading="lazy"
-            style={{ objectPosition: photo.position }}
-          />
+          <ProjectImage photo={photo} preview />
         </div>
         <div className="media-preview-label">
-          <span>THE LAB BUILD</span>
-          <span>{project.photos.length} hardware views ↗</span>
+          <span>{project.gallery?.previewLabel ?? "THE LAB BUILD"}</span>
+          <span>{project.gallery?.previewDetail ?? `${project.photos.length} hardware views ↗`}</span>
         </div>
       </div>
     );
@@ -126,6 +106,9 @@ export default function ProjectVisual({
         </div>
       </div>
     );
+  if (project.visual === "argus" || project.visual === "capstone") return null;
+  const diagram = diagrams[project.visual];
+  const Icon = diagram.icon;
   return (
     <div
       className={`project-visual visual-${project.visual} ${large ? "visual-large" : ""}`}
@@ -136,9 +119,7 @@ export default function ProjectVisual({
       </div>
       {project.visual === "arm" ||
       project.visual === "balance" ||
-      project.visual === "pong" ||
-      project.visual === "argus" ||
-      project.visual === "capstone" ? (
+      project.visual === "pong" ? (
         <TechnicalDiagram kind={project.visual} />
       ) : (
         <div className="schematic">

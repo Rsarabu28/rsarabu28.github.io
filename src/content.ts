@@ -5,6 +5,7 @@ export type Project = {
   year: string;
   summary: string;
   tags: string[];
+  previewTags?: string[];
   visual:
     | "exo"
     | "usar"
@@ -15,12 +16,17 @@ export type Project = {
     | "argus"
     | "capstone";
   status?: "in-progress";
-  icon?: "satellite" | "capstone";
   context: string;
   overview: string;
   sections: { title: string; text: string }[];
   facts: { value: string; label: string }[];
   links?: { label: string; url: string }[];
+  gallery?: {
+    title: string;
+    label: string;
+    previewLabel: string;
+    previewDetail: string;
+  };
   photos?: {
     src: string;
     alt: string;
@@ -28,6 +34,9 @@ export type Project = {
     caption: string;
     position: string;
     fit?: "contain" | "cover";
+    previewFit?: "contain" | "cover";
+    framing?: "capstone-sketch";
+    source?: { label: string; url: string };
   }[];
   demo?: {
     title: string;
@@ -113,9 +122,9 @@ export const projects: Project[] = [
     year: "2026",
     visual: "argus",
     status: "in-progress",
-    icon: "satellite",
     summary:
-      "A CMU CubeSat that works out its own orbit from pictures of Earth, with no GPS and no help from the ground.",
+      "Vision-based orbit determination for a CMU CubeSat, with onboard image retrieval and a simulator to test it.",
+    previewTags: ["Computer vision", "Jetson Orin", "Simulation"],
     tags: [
       "Computer vision",
       "Jetson Orin",
@@ -123,27 +132,53 @@ export const projects: Project[] = [
       "6-DOF simulation",
       "GNC",
     ],
+    gallery: {
+      title: "Earth as a reference",
+      label: "PROJECT SAMPLE IMAGERY",
+      previewLabel: "VISION-BASED NAVIGATION",
+      previewDetail: "Earth imagery ↗",
+    },
+    photos: [
+      {
+        src: "images/argus-earth-10t.jpg",
+        alt: "Earth-image mosaic of Washington and Oregon with coastline, mountain ranges, clouds, and agricultural land",
+        title: "Washington & Oregon",
+        caption: "Region 10T from the Argus region-classification sample set. Geotagged Earth imagery provides the visual reference for recognizing a location. This is a project input image, not a capture from Argus in orbit.",
+        position: "50% 50%",
+        fit: "contain",
+        source: { label: "Source: Argus model repository", url: "https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_10T_00001.png" },
+      },
+      {
+        src: "images/argus-earth-17r.jpg",
+        alt: "Earth-image mosaic of Florida showing the peninsula, surrounding water, and cloud cover",
+        title: "Florida",
+        caption: "Region 17R from the same project sample set. The coastline provides a distinctive geographic reference; black areas contain no image data. This is sample imagery used by the project’s classifier, not a localization result.",
+        position: "65% 50%",
+        fit: "contain",
+        source: { label: "Source: Argus model repository", url: "https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_17R_00000.png" },
+      },
+    ],
     context: "CMU 18-873 \u00b7 Spacecraft Design-Build-Fly",
     overview:
-      "Argus is a technology demonstration satellite: it takes a picture of the ground, works out where that picture was taken, and uses that to figure out its own orbit, without a GPS receiver and without help from a ground station. The team splits into a localization and computer vision half and a simulation and agentic GNC half. I am on the second one, working on the model that turns a camera frame into a coordinate and on the simulator we need in order to test it honestly.",
+      "Argus is a technology demonstration satellite designed to determine its orbit from images of Earth, without GPS or ground-station assistance. A localization model matches each camera frame to a known location, giving the spacecraft a position measurement.\n\nThe team is split between localization and computer vision, and simulation and agentic guidance, navigation, and control (GNC). I work with the simulation and GNC team on deploying the image-retrieval model and building the simulator needed to evaluate it.",
     sections: [
       {
-        title: "Getting the localization model onto the Jetson",
-        text: "Localization is an image retrieval model: it embeds a camera frame and searches a database of geotagged Earth tiles for the closest match. The detection models already export to ONNX and TensorRT, but the retrieval model has no export path yet, so that is the piece I am working on. The plan is to trace the small 27M parameter model with a sample image, export a portable ONNX graph, convert it to TensorRT on the Jetson Orin Nano that flies as the payload computer, and then confirm accuracy actually survives the conversion.",
+        title: "Onboard image retrieval",
+        text: "The localizer embeds a camera frame and searches a database of geotagged Earth tiles for the closest match. Detection models already export to ONNX and TensorRT; the retrieval model still needs an export path. That is the part I am working on.\n\nThe plan is to trace the 27-million-parameter model with a sample image, export it to ONNX, and convert it to TensorRT on the Jetson Orin Nano payload computer. I then need to check that localization accuracy survives the conversion.",
       },
       {
-        title: "Building the simulation to test in",
-        text: "The team has no closed loop simulator yet, and that is the thing everything else is waiting on. The plan is one 6-DOF dynamics engine as a single source of truth, orbit and attitude with J2 gravity, drag, and solar pressure, with SPICE handling ephemerides and frame conversions. On top of that we render what the spacecraft would actually see: star tracker views out of a star catalog, and Earth views from a geospatial engine so the pixel to ground geometry is exact and we know the right answer for every frame we feed the localizer.",
+        title: "A simulator with known ground truth",
+        text: "A closed-loop simulator is the next major dependency. The plan is a single six-degree-of-freedom dynamics engine for orbit and attitude, including J2 gravity, drag, and solar radiation pressure. SPICE will provide ephemerides and coordinate-frame conversions.\n\nThe simulator will render star-tracker views from a star catalog and Earth views from a geospatial engine. Known pixel-to-ground geometry will let us compare each localization estimate with the correct position.",
       },
       {
-        title: "Running agentic GNC against it",
-        text: "Once the loop closes, simulated frames go into localization and orbit determination, and the resulting commands go back into the dynamics engine and move the spacecraft. That is what the agentic GNC work needs in order to train and be validated at all, and it is what tells us where the model is actually costing the mission. The budget is tight in a way that makes this concrete: the camera and the Jetson are only powered for about ten minutes a cycle, so speed, accuracy, and model size are not separate goals, they trade against each other.",
+        title: "Closing the loop",
+        text: "Simulated frames will feed localization and orbit determination, with the resulting control commands returned to the dynamics engine. This loop will support training and validation of agentic GNC and help identify where model performance affects the mission.\n\nThe camera and Jetson have roughly ten minutes of power per cycle. Inference speed, accuracy, and model size must be evaluated together within that window.",
       },
     ],
     facts: [
-      { value: "27M", label: "Parameters in the flight model" },
+      { value: "27M", label: "Retrieval model parameters" },
       { value: "10 min", label: "Camera window per cycle" },
-      { value: "6-DOF", label: "Simulation truth engine" },
+      { value: "6-DOF", label: "Planned dynamics engine" },
     ],
     links: [
       { label: "18-873 course page", url: "https://courses.ece.cmu.edu/18873" },
@@ -157,9 +192,23 @@ export const projects: Project[] = [
     year: "2026\u201327",
     visual: "capstone",
     status: "in-progress",
-    icon: "capstone",
     summary:
-      "Two robot arms learning to work together to unpack a returned box of clothing, inspect the garment, and pack it back up.",
+      "A two-arm robotic system for inspecting, folding, and repacking returned clothing. An early-stage team capstone.",
+    previewTags: ["Bimanual manipulation", "Robot learning", "Cloth handling"],
+    gallery: {
+      title: "The concept",
+      label: "CONCEPT SKETCH",
+      previewLabel: "APPAREL RETURNS",
+      previewDetail: "Robot concept ↗",
+    },
+    photos: [{
+      src: "images/capstone-concept.png",
+      alt: "Front and side concept sketches of a mobile robot with two articulated arms and grippers on a vertical column",
+      title: "Two arms, one workspace",
+      caption: "An early concept for apparel-return cleaning and packing, from the project brief credited to Mohammed Rajkotwala. The team is still defining the hardware and final scope.",
+      position: "50% 50%",
+      framing: "capstone-sketch",
+    }],
     tags: [
       "Bimanual manipulation",
       "Reinforcement learning",
@@ -169,24 +218,24 @@ export const projects: Project[] = [
     ],
     context: "CMU ECE + Robotics \u00b7 Year-long team project",
     overview:
-      "A year long capstone with the problem picked and the name still to come. We want a pair of arms that can take a returned box of clothing, get one garment out of it, work out what it is and whether it is still sellable, then fold it and pack it back. We are early enough that most of this is still ideation, and honest enough to say a year may not be long enough to finish it.",
+      "For our year-long ECE and Robotics capstone, we are exploring how two robot arms could process a returned garment: unpack it, identify it, assess its condition, then fold and repack it. The project is in early ideation, with the final name, hardware, and scope still being defined.\n\nThe broader concept includes steam cleaning and returning garments to stock. Our current focus is the manipulation and inspection sequence; completing the full process within a year remains an open question.",
     sections: [
       {
         title: "Why this problem",
-        text: "The framing our team started from is that most apparel returned in the US never makes it back onto a shelf. Sorting, inspecting, and repackaging one garment by hand costs more than the garment is worth, so it goes to a landfill instead. We want to find out whether a pair of arms can run that loop cheaply enough to change the answer.",
+        text: "The project starts from the cost of processing apparel returns. Sorting, inspecting, cleaning, and repackaging garments by hand can make resale uneconomical and contribute to waste. We want to explore whether robotic handling can make more of those garments practical to restock.",
       },
       {
-        title: "What the system has to do",
-        text: "Open the box, pull one article of clothing out of a pile, work out what it is, decide whether it has a flaw that should keep it out of stock, then fold it and pack it back. The manipulation is the hard part. Cloth has no fixed shape to grab, folding is still an open research problem, and two arms sharing one workspace have to agree on who is holding what.",
+        title: "The manipulation challenge",
+        text: "The intended sequence is to open a box, separate one garment from a pile, identify it, check for defects, and fold and repack it. Vision must support both garment classification and condition assessment.\n\nCloth has no fixed shape or reliable grasp point. Folding remains an open research problem, and two arms sharing a workspace must coordinate which part of the garment each one holds.",
       },
       {
-        title: "What I want to get out of it",
-        text: "What I am after is the practice: reinforcement learning and imitation learning for manipulation, moving a policy from simulation onto real hardware, vision models for classifying garments and spotting defects, and the coordination problem of two arms working on one object at the same time.",
+        title: "My technical focus",
+        text: "I want to develop practical experience with reinforcement learning and imitation learning for manipulation, transferring policies from simulation to hardware, and coordinating two arms on a shared object. Garment classification and defect detection are also part of the learning goals. These learning goals will help us narrow the scope as the project develops.",
       },
     ],
     facts: [
       { value: "2 arms", label: "Shared workspace" },
-      { value: "RL + IL", label: "How the policy is trained" },
+      { value: "RL + IL", label: "Learning methods to explore" },
       { value: "Cloth", label: "Deformable, no fixed grasp" },
     ],
   },

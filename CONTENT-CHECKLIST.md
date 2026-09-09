@@ -10,10 +10,12 @@ The portfolio is published at [rsarabu28.github.io](https://rsarabu28.github.io/
 
 ## Current projects
 
-- [ ] Senior Capstone: final title, problem, team context, subsystem, status, and eventually media.
-- [ ] Argus: your subsystem, project summary, current progress, and shareable media.
+- [x] Senior Capstone: incorporated the apparel-return problem, year-long team context, early ideation status, technical interests, and supplied concept brief.
+- [ ] Senior Capstone: final title, selected hardware, narrowed scope, and prototype results.
+- [x] Argus: incorporated the localization export work, proposed simulator, agentic GNC goals, and mission constraints. Added sample Earth imagery from the team’s model repository.
+- [ ] Argus: add completed export benchmarks, simulator outputs, and shareable hardware media as they become available.
 
-Both currently use explicit “coming soon” descriptions in the In progress section on Home and at the top of Projects. Home follows these with the knee exoskeleton and electric trike. The old Current link redirects to Projects.
+Both use image-led, clickable project previews in the In progress section on Home and at the top of Projects. Detailed text appears on the individual case-study pages, with current work and future plans distinguished. Home follows these with the knee exoskeleton and electric trike. The old Current link redirects to Projects.
 
 ## Experience
 

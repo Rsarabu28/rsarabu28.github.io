@@ -1,6 +1,6 @@
 # Ray Sarabu's robotics portfolio
 
-A dark, responsive portfolio built with React, TypeScript, Tailwind CSS, and Vite. Navigation is Home, Projects, Experience, and About. Capstone and Argus lead both Home and Projects in an In progress section. Home then features the knee exoskeleton and electric trike; Projects includes all six previous projects, with self-balancing ahead of search and rescue. Experience covers General Motors and CMU MetaMobility, with a link to the Knee Exoskeleton case study. Original robotics footage, hardware and PCB images, trike build media, and an interactive arm planner support the work.
+A dark, responsive portfolio built with React, TypeScript, Tailwind CSS, and Vite. Navigation is Home, Projects, Experience, and About. Capstone and Argus lead both Home and Projects in an In progress section, using the same image-led project cards and case-study layout as previous work. Home then features the knee exoskeleton and electric trike; Projects includes all six previous projects, with self-balancing ahead of search and rescue. Experience covers General Motors and CMU MetaMobility, with a link to the Knee Exoskeleton case study. Original robotics footage, hardware and PCB images, trike build media, and an interactive arm planner support the work.
 
 ## Run locally
 
@@ -24,18 +24,20 @@ npm run preview
 
 ## Edit the content
 
-- `src/content.ts`: contact links, project descriptions, experience, media framing, metrics, sources, and in-progress placeholders.
+- `src/content.ts`: contact links, project descriptions, experience, media framing, metrics, sources, preview tags, and in-progress project details.
 - `src/App.tsx`: page layouts, About copy, and the optional trike video player.
 - `src/styles.css`: Tailwind theme and responsive component styles.
 - `src/ArmDemo.tsx`, `src/kinematics.ts`, `src/planner.worker.ts`: arm controls, geometry/planning, and background search.
 - `src/ProjectDemo.tsx`, `src/ProjectGallery.tsx`: native video players and selectable hardware views.
-- `public/images/`: supplied portrait and stills extracted from original local build videos.
+- `public/images/`: supplied portrait, project photography, build-video stills, capstone concept brief, and attributed Argus sample imagery.
 - `public/videos/`: silent, browser-compatible derivatives of the balancing and Pong recordings; Pong also retains its full-frame web recording.
 - `public/resume.pdf`: the Robotics résumé, selected because the newer Internships copy has a clipped header.
 - `CONTENT-CHECKLIST.md`: remaining user inputs and follow-up content.
 - `SOURCES.md`: source evidence and asset provenance.
 
-The diagrams illustrate the systems; they are not measured plots or original simulation recordings. The original arm project was a constructed, working two-link robot using A*. The website playground explores that idea further in a separate web implementation, with two to four links and movable obstacles. It uses analytical two-link IK, numerical CCD for redundant arms, and bounded RRT-Connect search in joint space.
+Argus uses Earth imagery from the team’s MIT-licensed model repository, with source links and the license in `public/licenses/`. These are classifier input samples, not flight captures or localization results. The capstone preview frames the robot sketches in the supplied concept brief; **Full brief** opens the unchanged slide. In-progress detail pages distinguish current work from planned capabilities. Hover and keyboard focus share the same timing and directional arrows; reduced-motion settings suppress movement.
+
+The remaining diagrams illustrate the systems; they are not measured plots or original simulation recordings. The original arm project was a constructed, working two-link robot using A*. The website playground explores that idea further in a separate web implementation, with two to four links and movable obstacles. It uses analytical two-link IK, numerical CCD for redundant arms, and bounded RRT-Connect search in joint space.
 
 Clicking a target starts planning and then slow automatic motion along the checked joint path. A dashed tip path and solid trail show the route. Add block enables click-to-place, or arrow keys and Enter can place a block on the focused plot. Every block is a fixed 32 × 32 square. Drag blocks or use arrow keys to move them; Delete or the bin removes the selected block. Up to six blocks are supported. Invalid placements are rejected; changed targets/blocks cancel the previous worker and animation. Link-count changes find a valid pose while preserving blocks. Reduced-motion settings skip animation.
 
