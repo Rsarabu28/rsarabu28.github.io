@@ -504,7 +504,7 @@ p {
   letter-spacing: 0;
 }
 .hero-baseline a:hover {
-  color: #c4b5fd;
+  color: var(--color-violet);
 }
 .page-section {
   padding-top: 92px;
@@ -541,7 +541,7 @@ p {
   transition: color 0.2s;
 }
 .text-link:hover {
-  color: #f0eaff;
+  color: var(--color-violet);
 }
 .text-link svg {
   flex-shrink: 0;
@@ -571,6 +571,13 @@ p {
 .project-card:hover {
   border-color: #c4b5fd4d;
   transform: translateY(-4px);
+}
+.project-card:hover .project-title-line h3 {
+  color: var(--color-violet);
+}
+.project-title-line h3,
+.experience-preview-row h3 {
+  transition: color 0.2s;
 }
 .project-visual {
   position: relative;
@@ -849,6 +856,15 @@ p {
 .current-copy {
   flex: 1;
 }
+.current-title-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.current-title-line .project-arrow {
+  flex-shrink: 0;
+}
 .current-copy .eyebrow {
   font-size: 12px;
   letter-spacing: 1px;
@@ -858,6 +874,23 @@ p {
   font-size: 23px;
   margin-top: 4px;
   letter-spacing: -0.6px;
+  transition: color 0.2s;
+}
+.current-row:hover h3 {
+  color: var(--color-violet);
+}
+.current-row:hover .project-arrow {
+  color: #c4b5fd;
+  transform: translate(2px, -2px);
+}
+.current-row:hover .current-icon {
+  border-color: #c4b5fd3d;
+  color: #d8ccff;
+}
+.current-icon {
+  transition:
+    border-color 0.25s,
+    color 0.25s;
 }
 .current-copy > p {
   color: var(--color-muted);
@@ -1503,6 +1536,49 @@ p {
 }
 .visual-arm {
   color: #b4c4ed;
+}
+.visual-argus {
+  color: #b0a7e4;
+}
+.visual-argus .diagram-box {
+  fill: #2a2740;
+  stroke: #8479b8;
+}
+.visual-argus .diagram-box.active-box {
+  fill: #383052;
+  stroke: #c4b5fd;
+}
+.visual-argus .diagram-node-label {
+  fill: #d6cef5;
+}
+.visual-argus .diagram-annotation {
+  fill: #a8a0cd;
+}
+.visual-argus .diagram-label-plate {
+  fill: #201f2c;
+}
+.visual-capstone {
+  color: #9dc7c2;
+}
+.visual-capstone .diagram-box {
+  fill: #22332f;
+  stroke: #6d938e;
+}
+.visual-capstone .diagram-box.active-box {
+  fill: #2b423d;
+  stroke: #a8d6d0;
+}
+.visual-capstone .diagram-node-label {
+  fill: #c9e1dd;
+}
+.visual-capstone .diagram-annotation {
+  fill: #9ab5b1;
+}
+.visual-capstone .diagram-label-plate {
+  fill: #1c2523;
+}
+.diagram-label-plate {
+  fill: #202320;
 }
 .visual-large .technical-diagram {
   max-height: 230px;

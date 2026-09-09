@@ -6,6 +6,8 @@ import {
   Activity,
   Zap,
   Play,
+  Satellite,
+  Wrench,
 } from "lucide-react";
 import { asset, type Project } from "./content";
 import TechnicalDiagram from "./TechnicalDiagram";
@@ -46,6 +48,18 @@ const diagrams = {
     nodes: ["Battery", "Controller", "Motor"],
     icon: Zap,
     caption: "Ray’s Builds · Electric vehicles",
+  },
+  argus: {
+    label: "VISION-BASED ORBIT DETERMINATION",
+    nodes: ["Frame", "Retrieve", "Fix"],
+    icon: Satellite,
+    caption: "Localization pipeline · Simplified",
+  },
+  capstone: {
+    label: "BIMANUAL MANIPULATION",
+    nodes: ["Unpack", "Identify", "Repack"],
+    icon: Wrench,
+    caption: "Handling pipeline · Simplified",
   },
 };
 
@@ -122,7 +136,9 @@ export default function ProjectVisual({
       </div>
       {project.visual === "arm" ||
       project.visual === "balance" ||
-      project.visual === "pong" ? (
+      project.visual === "pong" ||
+      project.visual === "argus" ||
+      project.visual === "capstone" ? (
         <TechnicalDiagram kind={project.visual} />
       ) : (
         <div className="schematic">

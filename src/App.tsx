@@ -37,8 +37,9 @@ import ProjectGallery from "./ProjectGallery";
 import TechnicalDiagram from "./TechnicalDiagram";
 import {
   asset,
-  currentProjects,
   experience,
+  inProgress,
+  pastProjects,
   profile,
   projects,
   type Project,
@@ -237,12 +238,13 @@ function SectionHeading({
 function CurrentList({ detailed = false }: { detailed?: boolean }) {
   return (
     <div className="current-list">
-      {currentProjects.map((project) => (
-        <article
+      {inProgress.map((project, index) => (
+        <Link
+          to={`/projects/${project.slug}`}
           className={detailed ? "current-row is-detailed" : "current-row"}
-          key={project.title}
+          key={project.slug}
         >
-          <span className="current-number">{project.number}</span>
+          <span className="current-number">0{index + 1}</span>
           <div className="current-icon">
             {project.icon === "satellite" ? (
               <Satellite strokeWidth={1.4} size={25} />
@@ -252,15 +254,20 @@ function CurrentList({ detailed = false }: { detailed?: boolean }) {
           </div>
           <div className="current-copy">
             <span className="eyebrow">{project.category}</span>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
+            <div className="current-title-line">
+              <h3>{project.name}</h3>
+              <span className="project-arrow">
+                <ArrowUpRight size={20} />
+              </span>
+            </div>
+            <p>{detailed ? project.overview : project.summary}</p>
             {detailed && (
               <>
                 <dl className="current-focus">
-                  {project.focus.map((item) => (
-                    <div key={item.title}>
-                      <dt>{item.title}</dt>
-                      <dd>{item.text}</dd>
+                  {project.sections.map((section) => (
+                    <div key={section.title}>
+                      <dt>{section.title}</dt>
+                      <dd>{section.text}</dd>
                     </div>
                   ))}
                 </dl>
@@ -269,28 +276,13 @@ function CurrentList({ detailed = false }: { detailed?: boolean }) {
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>
-                {project.links && (
-                  <div className="current-links">
-                    {project.links.map((link) => (
-                      <a
-                        key={link.url}
-                        href={link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-link"
-                      >
-                        {link.label} <ArrowUpRight size={15} />
-                      </a>
-                    ))}
-                  </div>
-                )}
               </>
             )}
           </div>
           <span className="status-label">
             <span className="live-dot" /> In progress
           </span>
-        </article>
+        </Link>
       ))}
     </div>
   );
@@ -346,7 +338,12 @@ function Home() {
         </a>
       </div>
       <section id="selected-work" className="page-section">
-        <SectionHeading eyebrow="01 / PROJECTS" title="In progress" />
+        <SectionHeading
+          eyebrow="01 / PROJECTS"
+          title="In progress"
+          to="/projects#in-progress"
+          link="All in progress"
+        />
         <CurrentList />
       </section>
       <section className="home-previous-projects">
@@ -435,6 +432,7 @@ function Projects() {
         </p>
       </section>
       <section
+        id="in-progress"
         className="in-progress-section"
         aria-labelledby="in-progress-heading"
       >
@@ -457,7 +455,7 @@ function Projects() {
           <span className="section-aside">2023 to 2026</span>
         </div>
         <div className="project-grid">
-          {projects.map((project, index) => (
+          {pastProjects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
@@ -858,14 +856,10 @@ function ProjectDetail() {
               <TechnicalDiagram kind="balance" />
             </section>
           )}
-          {!project.demo && !project.photos && project.visual !== "arm" && (
+          {!project.demo && !project.photos && project.visual === "ev" && (
             <div className="detail-pending">
               <span className="eyebrow">COMING SOON</span>
-              <p>
-                {project.visual === "ev"
-                  ? "I’ll add drift cart photos and build details here."
-                  : "I’ll add photos of the exoskeleton here."}
-              </p>
+              <p>I’ll add drift cart photos and build details here.</p>
             </div>
           )}
         </div>
@@ -894,9 +888,12 @@ function NotFound() {
 }
 
 function RouteEffects() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // A link like /projects#in-progress should land on that section, not the top.
+    const target = hash && document.getElementById(hash.slice(1));
+    if (target) target.scrollIntoView({ behavior: "instant", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "instant" });
     const project = projects.find((p) => pathname === `/projects/${p.slug}`);
     const title =
       project?.name ||
@@ -910,7 +907,7 @@ function RouteEffects() {
       )[pathname] ||
       "Page not found";
     document.title = `${title} | Ray Sarabu`;
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 }
 

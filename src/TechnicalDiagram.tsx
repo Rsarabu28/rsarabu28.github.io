@@ -3,9 +3,93 @@ import { useId } from "react";
 export default function TechnicalDiagram({
   kind,
 }: {
-  kind: "arm" | "balance" | "pong";
+  kind: "arm" | "balance" | "pong" | "argus" | "capstone";
 }) {
   const patternId = useId();
+  if (kind === "argus" || kind === "capstone") {
+    const isArgus = kind === "argus";
+    const nodes = isArgus
+      ? [
+          { t: "FRAME", sub: "camera" },
+          { t: "RETRIEVE", sub: "embed" },
+          { t: "MATCH", sub: "verify" },
+          { t: "ORBIT FIX", sub: "lat / lon" },
+        ]
+      : [
+          { t: "UNPACK", sub: "open box" },
+          { t: "IDENTIFY", sub: "what is it" },
+          { t: "INSPECT", sub: "defects" },
+          { t: "REPACK", sub: "fold" },
+        ];
+    const active = isArgus ? "RETRIEVE" : "IDENTIFY";
+    return (
+      <svg
+        className="technical-diagram"
+        viewBox="0 0 400 160"
+        role="img"
+        aria-label={
+          isArgus
+            ? "Localization pipeline: a camera frame is embedded, retrieved against a tile database, verified by matching, and turned into an orbit fix that feeds back into the next frame"
+            : "Handling pipeline: two arms unpack a box, identify the garment, inspect it for defects, and repack it, sharing one workspace throughout"
+        }
+      >
+        <path
+          d={
+            isArgus
+              ? "M87 60H109M189 60H211M291 60H313M353 86V124H47V86"
+              : "M87 60H109M189 60H211M291 60H313M47 96V120H353V96"
+          }
+          className="diagram-connectors"
+        />
+        {nodes.map((node, i) => (
+          <g key={node.t}>
+            <rect
+              x={7 + i * 102}
+              y="35"
+              width="80"
+              height="51"
+              rx="8"
+              className={
+                node.t === active ? "diagram-box active-box" : "diagram-box"
+              }
+            />
+            <text
+              x={47 + i * 102}
+              y="58"
+              textAnchor="middle"
+              className="diagram-node-label"
+            >
+              {node.t}
+            </text>
+            <text
+              x={47 + i * 102}
+              y="75"
+              textAnchor="middle"
+              className="diagram-annotation"
+            >
+              {node.sub}
+            </text>
+          </g>
+        ))}
+        <rect
+          x={isArgus ? 148 : 132}
+          y={isArgus ? 112 : 108}
+          width={isArgus ? 104 : 136}
+          height="23"
+          className="diagram-label-plate"
+        />
+        <text
+          x="200"
+          y={isArgus ? 128 : 124}
+          textAnchor="middle"
+          className="diagram-annotation"
+        >
+          {isArgus ? "ORBIT UPDATE" : "SHARED WORKSPACE"}
+        </text>
+        {isArgus && <path d="M42 92L47 84L52 92" className="diagram-arrow" />}
+      </svg>
+    );
+  }
   if (kind === "pong")
     return (
       <svg
