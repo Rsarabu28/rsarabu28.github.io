@@ -58,7 +58,7 @@ The project diagrams are illustrative architecture, state, feedback, and plannin
 - `public/images/knee-controller-fusion.png`: original 2800×1680 front render embedded in `Knee_PCB_Views`. `public/images/knee-shank-layout.png`: original 2800×1680 board view embedded in `shank_imu`. Both are copied unchanged; CSS frames the central board and full-image links remain available. Raw CAD/schematic archives are not included in the public site.
 - KiCad recent-project history references `Documents/KiCAD_projects/shank_imu`, `thigh_board_4_layer`, `thigh_board_v1`, and `thigh_board_v2`. Direct native-file reads timed out, so the site does not infer a four-layer stackup or claim the Fusion files are the latest KiCad revision.
 
-Fonts: self-hosted DM Sans and Space Grotesk via Fontsource (SIL Open Font License). Interface icons: Lucide (ISC license).
+Fonts: self-hosted Inter Tight via Fontsource (SIL Open Font License). Interface icons: Lucide (ISC license).
 
 
 ## In-progress project polish · September 9, 2026
@@ -69,3 +69,11 @@ Fonts: self-hosted DM Sans and Space Grotesk via Fontsource (SIL Open Font Licen
 - Pinned original sources: [10T / Washington and Oregon](https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_10T_00001.png), [17R / Florida](https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_17R_00000.png). The repository’s [classifier code](https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/run_basic_rc.py) establishes these region labels and loads the sample images. The page calls them project input samples, not flight captures, completed localization results, or Ray’s individual outputs.
 - The sample repository is MIT-licensed, copyright (c) 2024 Argus CubeSat, with no media exclusion found in its README. Its exact notice is distributed at `public/licenses/argus-NN-models.txt`. Restricted photographs from the separate Argus website repository are not used.
 - Removed the site-generated Argus and capstone pipeline schematics. Other projects retain their supporting diagrams and interactive demonstrations.
+
+
+## PR #1 integration
+
+- Merged the gallery-white redesign from `719a8cc` with the approved project polish at `2d88e21`. The PR supplies Inter Tight, the neutral palette, new brand/project icons, open project panels, a text-led homepage, and updated PCB framing.
+- Project data and project media remain from `2d88e21`: both in-progress case studies, their shorter clickable previews, source attribution, and the original capstone brief framing are retained. The arm playground remains on its project page, following the PR’s layout.
+- Integration adds Argus and capstone to the PR’s icon map, adapts image and metadata wrappers to the new layout, and retains consistent hover/focus timing and reduced-motion support. Muted text is darkened slightly for legibility against white and light-gray backgrounds.
+- The separate video-reference color experiment remains in a Git stash and was not used as the merge source.
