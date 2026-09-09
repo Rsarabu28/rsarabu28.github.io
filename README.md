@@ -41,14 +41,16 @@ Clicking a target starts planning and then slow automatic motion along the check
 
 Collision checks use thick links, rectangular obstacles, nonadjacent-link self-collision, a ground restriction, and joint limits that prevent folding adjacent links back onto each other. Swept edges are certified with clearance bounds and adaptive subdivision. Shortcutting and playback preserve these validated edges. Search is bounded, so “No path found within the search limit” does not prove a route is impossible. It is a browser illustration, not a hardware motion controller.
 
-## Publish on GitHub Pages later
+## Publishing and updates
 
-The site is currently local. No GitHub repository has been created, and nothing has been pushed or published.
+The portfolio is live at [rsarabu28.github.io](https://rsarabu28.github.io/). Its public repository is [Rsarabu28/rsarabu28.github.io](https://github.com/Rsarabu28/rsarabu28.github.io).
 
-1. Create a GitHub repository. For a personal root site, name it `YOUR_USERNAME.github.io`. An ordinary repository name such as `portfolio` also works. GitHub Free requires a public repository for Pages.
-2. Add it as the `origin` remote, commit the site source, and push `main`. `node_modules`, `dist`, and the original workspace résumé are ignored; the intended public copy is in `public/`.
-3. In the repository's **Settings → Pages**, select **GitHub Actions** as the source.
-4. Run the **Deploy portfolio to GitHub Pages** workflow if the initial push happened before Pages was enabled. Future pushes to `main` deploy automatically.
+1. Make changes in this folder and check them in the local preview with `npm run dev`.
+2. In GitHub Desktop, review the changes, write a short summary, and choose **Commit to main**.
+3. Choose **Push origin**. The **Deploy portfolio to GitHub Pages** workflow checks, builds, and publishes the updated site automatically.
+4. Follow the latest run in the repository's **Actions** tab. Once it succeeds, the live site updates. A failed build does not replace the last successful deployment.
+
+GitHub Pages is configured to use **GitHub Actions**. The `origin` remote already points to this repository. `node_modules`, `dist`, and the original workspace résumé are ignored; the intended public résumé is in `public/`.
 
 The workflow obtains the deployment base path from GitHub Pages. Assets work at either an account root or a repository subpath, including a future custom domain. Hash routing (`/#/projects/...`) lets direct project links and refreshes work on GitHub Pages without server rewrites or a 404 redirect workaround.
 

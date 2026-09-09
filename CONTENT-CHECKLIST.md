@@ -1,12 +1,12 @@
 # Content to finish
 
-The first version is ready for local review. These items can be filled in incrementally.
+The portfolio is published at [rsarabu28.github.io](https://rsarabu28.github.io/). These remaining details can be filled in incrementally.
 
 ## Links
 
 - [x] Added the user-confirmed GitHub profile, `https://github.com/Rsarabu28`, to the site's contact links.
 - [ ] Confirm the matched LinkedIn profile: https://www.linkedin.com/in/ray-sarabu-ab7ba2256 . It matches Ray Sarabu, CMU, General Motors, and Pittsburgh, but was not linked from either résumé.
-- [ ] Choose a GitHub repository when ready to publish. The workflow supports root and project sites.
+- [x] Published `Rsarabu28/rsarabu28.github.io` and enabled GitHub Pages with the existing Actions workflow. Pushing to `main` publishes updates.
 
 ## Current projects
 
