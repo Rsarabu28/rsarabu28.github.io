@@ -496,11 +496,10 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               <circle
                 cx={origin.x + traceStart.x}
                 cy={origin.y - traceStart.y}
-                r="4"
+                r="5"
                 className="trace-start-point"
               />
             )}
-            <path d={svgPath(points)} className="arm-shadow" />
             {lengths.map((_, i) => (
               <g key={i}>
                 <path
@@ -531,14 +530,15 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               fill="#111111"
             />
             {lengths.map((_, i) => (
-              <text
+              <g
                 key={i}
-                x={origin.x + (points[i].x + points[i + 1].x) / 2 + 10}
-                y={origin.y - (points[i].y + points[i + 1].y) / 2 - 10}
-                className="link-label"
+                transform={`translate(${origin.x + (points[i].x + points[i + 1].x) / 2}, ${origin.y - (points[i].y + points[i + 1].y) / 2})`}
               >
-                L{i + 1}
-              </text>
+                <rect x="-11" y="-8" width="22" height="16" rx="4" className="link-label-background" />
+                <text className="link-label" textAnchor="middle" dominantBaseline="central">
+                  L{i + 1}
+                </text>
+              </g>
             ))}
           </g>
         </svg>

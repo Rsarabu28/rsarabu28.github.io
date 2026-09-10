@@ -360,7 +360,7 @@ function Home() {
           ))}
         </div>
       </section>
-      <section className="home-about">
+      <Link to="/about" className="home-about" aria-labelledby="home-about-heading">
         <img
           src={asset("images/ray-and-dog.jpg")}
           alt="Ray outdoors with his dog"
@@ -368,14 +368,11 @@ function Home() {
         />
         <div>
           <p className="eyebrow">03 / ABOUT ME</p>
-          <h2>Get to know me</h2>
+          <h2 id="home-about-heading">Get to know me</h2>
           <p>A little about my background and what I’m into outside of work.</p>
-          <Link to="/about" className="text-link">
-            Learn more <ArrowUpRight size={17} />
-          </Link>
         </div>
-        <ArrowDownRight className="about-accent" size={60} strokeWidth={1} />
-      </section>
+        <ArrowDownRight className="about-accent" size={60} strokeWidth={1} aria-hidden="true" />
+      </Link>
     </>
   );
 }
