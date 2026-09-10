@@ -529,17 +529,30 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               r="5"
               fill="#111111"
             />
-            {lengths.map((_, i) => (
-              <g
-                key={i}
-                transform={`translate(${origin.x + (points[i].x + points[i + 1].x) / 2}, ${origin.y - (points[i].y + points[i + 1].y) / 2})`}
-              >
-                <rect x="-9" y="-7" width="18" height="14" rx="3" className="link-label-background" />
-                <text className="link-label" textAnchor="middle" dominantBaseline="central">
+            {lengths.map((_, i) => {
+              const mx = origin.x + (points[i].x + points[i + 1].x) / 2;
+              const my = origin.y - (points[i].y + points[i + 1].y) / 2;
+              // Always offset to the same side: a side that depended on the
+              // link's angle would flip as the arm swings through vertical.
+              // Shortened on short links so the label clears the joint dots.
+              const span = Math.hypot(
+                points[i + 1].x - points[i].x,
+                points[i + 1].y - points[i].y,
+              );
+              const offset = Math.min(11, Math.max(7, span * 0.24));
+              return (
+                <text
+                  key={i}
+                  x={mx + offset}
+                  y={my}
+                  className="link-label"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
                   L{i + 1}
                 </text>
-              </g>
-            ))}
+              );
+            })}
           </g>
         </svg>
         {warning && (
