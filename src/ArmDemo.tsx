@@ -534,7 +534,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
                 key={i}
                 transform={`translate(${origin.x + (points[i].x + points[i + 1].x) / 2}, ${origin.y - (points[i].y + points[i + 1].y) / 2})`}
               >
-                <rect x="-11" y="-8" width="22" height="16" rx="4" className="link-label-background" />
+                <rect x="-9" y="-7" width="18" height="14" rx="3" className="link-label-background" />
                 <text className="link-label" textAnchor="middle" dominantBaseline="central">
                   L{i + 1}
                 </text>

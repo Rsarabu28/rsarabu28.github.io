@@ -431,7 +431,7 @@ p {
 .link-label {
   fill: var(--color-ink);
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 10px;
 }
 .demo-controls {
   border-top: 1px solid #11111113;
