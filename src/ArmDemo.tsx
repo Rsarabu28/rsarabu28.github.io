@@ -496,7 +496,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               <circle
                 cx={origin.x + traceStart.x}
                 cy={origin.y - traceStart.y}
-                r="5"
+                r="4"
                 className="trace-start-point"
               />
             )}
@@ -527,7 +527,7 @@ export default function ArmDemo({ compact = false }: { compact?: boolean }) {
               cx={origin.x + tip.x}
               cy={origin.y - tip.y}
               r="5"
-              fill="#111111"
+              fill={count === 3 ? "var(--plot-plan)" : "#111111"}
             />
             {lengths.map((_, i) => {
               const mx = origin.x + (points[i].x + points[i + 1].x) / 2;

@@ -208,9 +208,13 @@ p {
   margin-left: 5px;
   display: inline-block;
 }
+.hero-copy {
+  container-type: inline-size;
+  min-width: 0;
+}
 .hero-copy h1 {
-  font-size: clamp(56px, 5.5vw, 74px);
-  letter-spacing: -3.5px;
+  font-size: clamp(2rem, 14cqi, 4.625rem);
+  letter-spacing: -0.045em;
   line-height: 1.08;
   margin-bottom: 27px;
   font-weight: 500;
@@ -978,24 +982,15 @@ p {
   gap: 65px;
 }
 .portrait-wrap {
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--color-panel);
 }
 .portrait-wrap > img {
+  display: block;
   width: 100%;
   aspect-ratio: 1.04;
   object-fit: cover;
   object-position: 100% 0%;
-}
-.portrait-caption {
-  display: flex;
-  justify-content: space-between;
-  padding: 17px 21px;
-  font-family: var(--font-display);
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--color-muted);
 }
 .about-story h2 {
   font-size: 31px;
@@ -1470,7 +1465,6 @@ p {
 .visual-bottomline,
 .status-label,
 .footer-bottom,
-.portrait-caption,
 .demo-heading,
 .demo-heading > span:last-child,
 .hero-baseline,
@@ -1497,10 +1491,6 @@ p {
   .home-hero {
     gap: 25px;
     padding-top: 64px;
-  }
-  .hero-copy h1 {
-    font-size: 58px;
-    letter-spacing: -2.8px;
   }
   .hero-description {
     font-size: 16px;
@@ -1557,9 +1547,6 @@ p {
     grid-template-columns: 1fr;
     gap: 14px;
     padding: 38px 0 26px;
-  }
-  .hero-copy h1 {
-    font-size: clamp(54px, 10vw, 74px);
   }
   .hero-description {
     max-width: 490px;
@@ -1865,9 +1852,6 @@ p {
     order: 1;
     margin-left: auto;
     font-size: 12px;
-  }
-  .hero-copy h1 {
-    font-size: 56px;
   }
   .hero-intro {
     font-size: 16px;
@@ -2458,9 +2442,6 @@ p {
   .pcb-image-frame {
     height: 450px;
   }
-  .hero-copy h1 {
-    font-size: clamp(44px, 12.5vw, 56px);
-  }
 }
 .section-aside {
   color: var(--color-muted);
@@ -3008,4 +2989,8 @@ button:disabled {
   .link-count-control {
     flex-shrink: 0;
   }
+}
+
+.detail-body + .project-gallery {
+  margin-top: 60px;
 }

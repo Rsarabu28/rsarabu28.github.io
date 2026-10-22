@@ -57,6 +57,25 @@ export default function ProjectVisual({
   project: Project;
   large?: boolean;
 }) {
+  if (project.demo)
+    return (
+      <div className="project-visual media-preview project-demo-poster">
+        <div className="media-preview-frame">
+          <img
+            src={asset(project.demo.cardPoster || project.demo.poster)}
+            alt={project.demo.alt}
+            loading="lazy"
+            style={{ objectPosition: project.demo.posterPosition }}
+          />
+        </div>
+        <div className="media-preview-label">
+          <span>
+            <Play size={12} fill="currentColor" /> {project.demo.badge ?? "HARDWARE DEMO"}
+          </span>
+          <span>{project.demo.duration} · Watch ↗</span>
+        </div>
+      </div>
+    );
   if (project.photos?.length) {
     const photo = project.photos[0];
     return (
@@ -71,25 +90,6 @@ export default function ProjectVisual({
       </div>
     );
   }
-  if (project.demo)
-    return (
-      <div className="project-visual media-preview project-demo-poster">
-        <div className="media-preview-frame">
-          <img
-            src={asset(project.demo.cardPoster || project.demo.poster)}
-            alt={project.demo.alt}
-            loading="lazy"
-            style={{ objectPosition: project.demo.posterPosition }}
-          />
-        </div>
-        <div className="media-preview-label">
-          <span>
-            <Play size={12} fill="currentColor" /> HARDWARE DEMO
-          </span>
-          <span>{project.demo.duration} · Watch ↗</span>
-        </div>
-      </div>
-    );
   if (project.visual === "ev")
     return (
       <div
@@ -106,7 +106,12 @@ export default function ProjectVisual({
         </div>
       </div>
     );
-  if (project.visual === "argus" || project.visual === "capstone") return null;
+  if (
+    project.visual === "argus" ||
+    project.visual === "capstone" ||
+    project.visual === "armadillo"
+  )
+    return null;
   const diagram = diagrams[project.visual];
   const Icon = diagram.icon;
   return (

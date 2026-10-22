@@ -238,10 +238,13 @@ function SectionHeading({
   );
 }
 
-function CurrentProjects() {
+function CurrentProjects({ only }: { only?: string[] } = {}) {
+  const shown = only
+    ? inProgress.filter((project) => only.includes(project.slug))
+    : inProgress;
   return (
     <div className="project-grid">
-      {inProgress.map((project, index) => (
+      {shown.map((project, index) => (
         <ProjectCard key={project.slug} project={project} index={index} />
       ))}
     </div>
@@ -257,9 +260,9 @@ function Home() {
             I’m Ray Sarabu, an ECE + Robotics student at Carnegie Mellon.
           </p>
           <h1>
-            What I’ve been
+            Here’s what I’ve
             <br />
-            <span>working on.</span>
+            <span>been working on.</span>
           </h1>
           <p className="hero-description">
             I build robotic systems across embedded software, controls,
@@ -305,7 +308,7 @@ function Home() {
           to="/projects#in-progress"
           link="All in progress"
         />
-        <CurrentProjects />
+        <CurrentProjects only={["arm-adillo", "argus-3"]} />
       </section>
       <section className="home-previous-projects">
         <SectionHeading
@@ -509,10 +512,6 @@ function About() {
             src={asset("images/ray-and-dog.jpg")}
             alt="Ray Sarabu with his dog outside in a garden"
           />
-          <div className="portrait-caption">
-            <span>ME AND MY DOG</span>
-            <span>↗</span>
-          </div>
         </div>
         <div className="about-story">
           <h2>Hey, I’m Ray.</h2>
@@ -826,6 +825,9 @@ function ProjectDetail() {
           )}
         </div>
       </div>
+      {project.demo && project.photos && (
+        <ProjectGallery key={project.slug} project={project} />
+      )}
       <Link to={`/projects/${next.slug}`} className="next-project">
         <div>
           <p className="eyebrow">NEXT PROJECT</p>

@@ -14,7 +14,8 @@ export type Project = {
     | "balance"
     | "pong"
     | "argus"
-    | "capstone";
+    | "capstone"
+    | "armadillo";
   status?: "in-progress";
   context: string;
   overview: string;
@@ -40,6 +41,7 @@ export type Project = {
   }[];
   demo?: {
     title: string;
+    badge?: string;
     video: string;
     fullVideo?: string;
     poster: string;
@@ -120,20 +122,127 @@ export const experience = [
 
 export const projects: Project[] = [
   {
+    slug: "arm-adillo",
+    name: "Arm-adillo",
+    category: "Locomotion + manipulation · Personal project",
+    year: "2026",
+    visual: "armadillo",
+    status: "in-progress",
+    summary:
+      "A robot arm that curls into a wheel and rolls to get around, then unfolds to pick things up. I’m designing it in simulation before building it.",
+    previewTags: ["MuJoCo", "Reinforcement learning", "Mechanism design"],
+    tags: [
+      "MuJoCo",
+      "Reinforcement learning",
+      "Mechanism design",
+      "Feetech servos",
+    ],
+    demo: {
+      title: "How can a robot arm move without a mobile base?",
+      badge: "SIMULATION",
+      video: "videos/armadillo-rl-roll.mp4",
+      poster: "images/armadillo-rl-roll-poster.jpg",
+      alt: "A simulated robot curled into a ring, tipping over itself to roll across a checkered floor",
+      caption:
+        "The robot rolling one turn after another. The camera follows it, so the floor is what moves. Screen recording from my MuJoCo simulation; the video is silent.",
+      duration: "28 sec",
+      aspectRatio: "4 / 3",
+      observations: [
+        {
+          title: "The arm is the wheel",
+          text: "The links are curved, so they fold into a ring with the flat base as the bottom. There are no drive wheels anywhere on the robot.",
+        },
+        {
+          title: "Rolling by leaning",
+          text: "To roll, it reshapes itself so its weight sits just past the point it is standing on, tips over that point, and catches itself on the way down.",
+        },
+        {
+          title: "Where the motion comes from",
+          text: "I wrote the rolling motion by hand first, then trained a policy that nudges it while it runs. The learned version keeps its momentum instead of stopping between rolls.",
+        },
+      ],
+    },
+    gallery: {
+      title: "The shape it settles into",
+      label: "SIMULATION RENDERS",
+      previewLabel: "ROLLING MANIPULATOR",
+      previewDetail: "Design views ↗",
+    },
+    photos: [
+      {
+        src: "images/armadillo-curled-side.jpg",
+        alt: "Side view of the robot curled into a ring, sitting on its flat base with the gripper folded inside",
+        title: "Curled up",
+        caption:
+          "Curled into its rolling shape, seen from the side. The flat base is the bottom of the ring, so the robot sits still until it decides to tip over the curve. The gripper folds into the middle, out of the way of the floor.",
+        position: "50% 50%",
+      },
+      {
+        src: "images/armadillo-curled-back.jpg",
+        alt: "Three-quarter view from behind the robot showing the raised shoulder post and the tapered base",
+        title: "From behind",
+        caption:
+          "The same shape from behind. The shoulder sits on a short post above the base so the arm can swing while the robot is curled, and the base tapers toward the back to stay inside the rolling circle.",
+        position: "50% 50%",
+      },
+      {
+        src: "images/armadillo-reach.jpg",
+        alt: "The robot unfolded flat on the floor with its arm stretched out to a small cube at the edge of its reach",
+        title: "Unfolded",
+        caption:
+          "Unfolded and reaching. Nothing bolts this robot down, so how far it can reach is set by when it tips, not by its joints. Reaching out, resting a hand on the floor, and sliding an object closer before lifting gets it to an object 53 cm away.",
+        position: "50% 50%",
+      },
+    ],
+    context: "Personal project · Simulation, heading to hardware",
+    overview:
+      "Almost every robot arm is either bolted to a bench or carried around on a mobile base that weighs more than the arm itself, and I have found very little work on arms that have neither. Arm-adillo is my attempt at one. The links of the arm are curved, so the same joints that reach out and grasp can also close the robot into a wheel and roll it across the floor.\n\nIt also has to survive doing that. A robot that travels by tipping over itself lands hard, so the shape, the motors, and the motion all have to be chosen together: light enough to throw itself over, strong enough to lift something once it gets there, and soft enough on landing not to strip a gearbox. Working that out is most of what the project has been so far.",
+    sections: [
+      {
+        title: "What it has to do",
+        text: "Curled up, the robot is a ring with one flat side. It sits still on the flat part, and to move it leans past the edge and tips over the curve, one roll at a time. It can also turn roughly in place.\n\nUnfolded, it is an arm again. It can pick an object up off the floor, fold it into the middle of the ring, and carry it there while it rolls, so the object never touches the ground. In simulation it has carried objects up to 300 g this way.",
+      },
+      {
+        title: "Working it out in simulation",
+        text: "I built the model in MuJoCo in stages, each one small enough to watch: a single hinge, a two-link arm, a chain that touches the ground, the curl into a ring, the first roll, then 3D, turning, and grasping. Each stage answered one question before the next one started.\n\nRather than hand-pick the proportions, I wrote a score for what I cared about and let a search try 150 variations of the geometry. Rolling and reaching want opposite things, so the point was to find one shape that is good enough at both.\n\nThe motions are written by hand and then improved with reinforcement learning. Every training run uses a slightly different robot, with the friction, masses, and motor strength shuffled, so the result doesn’t depend on one perfect machine. That matters because the real one won’t match the model exactly.",
+      },
+      {
+        title: "Turning it into hardware",
+        text: "The simulation is built around parts I can actually buy. Every mass in it comes from a list of real components, and the robot is driven by Feetech bus servos, the same ones the SO-101 arm uses, so the commands in the simulation are the commands the real servos take.\n\nThat is what I’m working on now: turning the locked-in dimensions into CAD, printing the shells and brackets, and then measuring the real hardware to correct the places where my model is still a guess.",
+      },
+    ],
+    facts: [
+      { value: "6 servos", label: "The whole robot: arm, wheel, and gripper" },
+      { value: "≈0.9 kg", label: "Mass budget from the parts list" },
+      { value: "53 cm", label: "Farthest pickup in simulation" },
+    ],
+    links: [
+      {
+        label: "SO-101 arm (LeRobot)",
+        url: "https://github.com/huggingface/lerobot",
+      },
+      {
+        label: "MuJoCo Menagerie",
+        url: "https://github.com/google-deepmind/mujoco_menagerie",
+      },
+    ],
+  },
+  {
     slug: "argus-3",
     name: "Argus 3 Nanosatellite",
-    category: "Space systems \u00b7 CMU 18-873",
+    category: "Space systems · CMU 18-873",
     year: "2026",
     visual: "argus",
     status: "in-progress",
     summary:
-      "Vision-based orbit determination for a CMU CubeSat, with onboard image retrieval and a simulator to test it.",
+      "A CMU CubeSat that works out its own orbit from photographs of Earth, with no GPS. I work on the flight computer side and on the simulator we test it in.",
     previewTags: ["Computer vision", "Jetson Orin", "Simulation"],
     tags: [
       "Computer vision",
       "Jetson Orin",
       "ONNX / TensorRT",
-      "6-DOF simulation",
+      "NASA SPICE",
+      "Simulation",
       "GNC",
     ],
     gallery: {
@@ -147,7 +256,7 @@ export const projects: Project[] = [
         src: "images/argus-earth-10t.jpg",
         alt: "Earth-image mosaic of Washington and Oregon with coastline, mountain ranges, clouds, and agricultural land",
         title: "Washington & Oregon",
-        caption: "Region 10T from the Argus region-classification sample set. Geotagged Earth imagery provides the visual reference for recognizing a location. This is a project input image, not a capture from Argus in orbit.",
+        caption: "Region 10T from the Argus sample image set. Geotagged imagery like this is what a camera frame gets matched against to produce a position. This is a project input image, not a photo taken by Argus in orbit.",
         position: "50% 50%",
         fit: "contain",
         source: { label: "Source: Argus model repository", url: "https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_10T_00001.png" },
@@ -156,33 +265,37 @@ export const projects: Project[] = [
         src: "images/argus-earth-17r.jpg",
         alt: "Earth-image mosaic of Florida showing the peninsula, surrounding water, and cloud cover",
         title: "Florida",
-        caption: "Region 17R from the same project sample set. The coastline provides a distinctive geographic reference; black areas contain no image data. This is sample imagery used by the project’s classifier, not a localization result.",
+        caption: "Region 17R from the same set. A coastline gives the match something distinctive to work with; black areas contain no image data. Sample imagery used by the project, not a localization result.",
         position: "65% 50%",
         fit: "contain",
         source: { label: "Source: Argus model repository", url: "https://github.com/cmu-argus-2/NN-models/blob/b79f54a3840afd5e34f4a9c1c0e6ebd8a8971d6c/rc/sample_images/l9_17R_00000.png" },
       },
     ],
-    context: "CMU 18-873 \u00b7 Spacecraft Design-Build-Fly",
+    context: "CMU 18-873 · Visual & agentic GNC team",
     overview:
-      "Argus is a technology demonstration satellite designed to determine its orbit from images of Earth, without GPS or ground-station assistance. A localization model matches each camera frame to a known location, giving the spacecraft a position measurement.\n\nThe team is split between localization and computer vision, and simulation and agentic guidance, navigation, and control (GNC). I work with the simulation and GNC team on deploying the image-retrieval model and building the simulator needed to evaluate it.",
+      "Argus is a CubeSat built to work out where it is from pictures of Earth. Instead of a GPS receiver, it carries a camera and a localization model: each photo is matched against a database of known Earth imagery, and the position that comes out of the match is what navigation runs on.\n\nI’m on the visual and agentic GNC team. One half of it works on the localization model and getting it to run on the spacecraft’s computer; the other builds the simulator everything is tested in, and the agent that will decide when the satellite takes its next picture. I work across both halves: getting the model onto the flight computer, and building out the simulator, in particular the layer that knows where the Sun and the Earth are.",
     sections: [
       {
-        title: "Onboard image retrieval",
-        text: "The localizer embeds a camera frame and searches a database of geotagged Earth tiles for the closest match. Detection models already export to ONNX and TensorRT; the retrieval model still needs an export path. That is the part I am working on.\n\nThe plan is to trace the 27-million-parameter model with a sample image, export it to ONNX, and convert it to TensorRT on the Jetson Orin Nano payload computer. I then need to check that localization accuracy survives the conversion.",
+        title: "Finding yourself from one photo",
+        text: "The model turns a camera frame into a vector and searches a database of geotagged Earth tiles for the closest match. That gives a rough location. A second stage matches features between the photo and the retrieved tile to produce precise ground points, which is what orbit determination actually needs.\n\nOn real photographs the full-size model retrieves the correct tile first about 68% of the time and almost always within its top hundred, for a median error around 79 km. Adding the feature matcher brings that down to roughly 16 km, on about half the photos. That is still a long way from where it needs to be, and closing that gap is where most of our effort is going.",
       },
       {
-        title: "A simulator with known ground truth",
-        text: "A closed-loop simulator is the next major dependency. The plan is a single six-degree-of-freedom dynamics engine for orbit and attitude, including J2 gravity, drag, and solar radiation pressure. SPICE will provide ephemerides and coordinate-frame conversions.\n\nThe simulator will render star-tracker views from a star catalog and Earth views from a geospatial engine. Known pixel-to-ground geometry will let us compare each localization estimate with the correct position.",
+        title: "Getting the model onto the flight computer",
+        text: "The satellite carries a Jetson Orin Nano, and the camera and computer are only powered for about ten minutes per cycle, so speed and memory matter as much as accuracy. We converted both sizes of the model, 27M and 105M parameters, from PyTorch through ONNX to TensorRT on the device, and checked the converted outputs against the originals on real photographs taken from the ISS.\n\nThey run at 15 and 44 milliseconds per image. We tried half precision, which was about twice as fast, but the outputs drifted far enough to risk retrieving the wrong place, so we stayed at full precision. The reference database is around 300 GB and cannot live on the satellite, which is the other half of the small-versus-large model decision.",
       },
       {
-        title: "Closing the loop",
-        text: "Simulated frames will feed localization and orbit determination, with the resulting control commands returned to the dynamics engine. This loop will support training and validation of agentic GNC and help identify where model performance affects the mission.\n\nThe camera and Jetson have roughly ten minutes of power per cycle. Inference speed, accuracy, and model size must be evaluated together within that window.",
+        title: "The simulator it gets tested in",
+        text: "None of this can be checked against the real thing, so we are building a simulator where the right answer is known: Basilisk for the orbital physics, and Unity with NASA imagery for what the camera would see. The physics runs as its own headless service and owns the clock, so the rendering just follows along.\n\nMy part is the layer that knows where things are and when. It uses NASA’s SPICE toolkit to supply Sun and Earth positions and eclipse times, and includes a tool that fetches the planetary data files and checks each one against an approved fingerprint before a run, so a missing or altered file is caught up front instead of quietly producing wrong results. Alongside that I work through issues on the simulation repo with the rest of the team as the codebase gets restructured.",
+      },
+      {
+        title: "Letting an agent decide when to look",
+        text: "The other side of the project is an agent that recommends when the spacecraft should take its next picture, from its predicted ground track, the sun angle, whether it is in eclipse, and how useful the resulting image is likely to be.\n\nThe plan is to prove that on the ground first, where there is compute, full logging, and a human approval step, and only then look at which time-critical pieces could move onto the satellite.",
       },
     ],
     facts: [
-      { value: "27M", label: "Retrieval model parameters" },
-      { value: "10 min", label: "Camera window per cycle" },
-      { value: "6-DOF", label: "Planned dynamics engine" },
+      { value: "44 ms", label: "Full model per image on the Jetson" },
+      { value: "16 km", label: "Median error, photo to position" },
+      { value: "10 min", label: "Camera and compute per cycle" },
     ],
     links: [
       { label: "18-873 course page", url: "https://courses.ece.cmu.edu/18873" },
@@ -191,56 +304,56 @@ export const projects: Project[] = [
   },
   {
     slug: "robotics-capstone",
-    name: "Robotics Capstone",
-    category: "Manipulation \u00b7 Capstone",
-    year: "2026\u201327",
+    name: "Attire Sorting Robot",
+    category: "Manipulation · Capstone",
+    year: "2026–27",
     visual: "capstone",
     status: "in-progress",
     summary:
-      "A two-arm robotic system for inspecting, folding, and repacking returned clothing. An early-stage team capstone.",
-    previewTags: ["Bimanual manipulation", "Robot learning", "Cloth handling"],
+      "A robot that takes a pile of donated clothing and turns it into garments that have each been pulled out, identified, inspected, and sorted. A year-long team capstone, still early.",
+    previewTags: ["Deformable objects", "Perception-driven manipulation", "Task planning"],
     gallery: {
       title: "The concept",
       label: "CONCEPT SKETCH",
-      previewLabel: "APPAREL RETURNS",
+      previewLabel: "SORTING DONATED CLOTHING",
       previewDetail: "Robot concept ↗",
     },
     photos: [{
       src: "images/capstone-concept.png",
       alt: "Front and side concept sketches of a mobile robot with two articulated arms and grippers on a vertical column",
-      title: "Two arms, one workspace",
-      caption: "An early concept for apparel-return cleaning and packing, from the project brief credited to Mohammed Rajkotwala. The team is still defining the hardware and final scope.",
+      title: "An early concept",
+      caption: "An early concept sketch from the project brief, credited to Mohammed Rajkotwala. The hardware is not chosen yet, so this shows the idea rather than the machine we will build.",
       position: "50% 50%",
       framing: "capstone-sketch",
     }],
     tags: [
-      "Bimanual manipulation",
-      "Reinforcement learning",
-      "Imitation learning",
-      "Sim to real",
       "Deformable objects",
+      "Singulation from clutter",
+      "Garment classification",
+      "Defect inspection",
+      "Task planning",
     ],
-    context: "CMU ECE + Robotics \u00b7 Year-long team project",
+    context: "CMU 16-450 · Team of four (Legen-droids)",
     overview:
-      "For our year-long ECE and Robotics capstone, we are exploring how two robot arms could process a returned garment: unpack it, identify it, assess its condition, then fold and repack it. The project is in early ideation, with the final name, hardware, and scope still being defined.\n\nThe broader concept includes steam cleaning and returning garments to stock. Our current focus is the manipulation and inspection sequence; completing the full process within a year remains an open question.",
+      "Donation centers receive clothing in unsorted piles, and separating, checking, and preparing each item is done almost entirely by hand. Our capstone asks whether a robot can do the middle of that job: start from a pile of donated clothing and end with garments that have each been pulled out on their own, identified, inspected for damage, folded or hung, and placed where they belong.\n\nWe have written the requirements and defined the pipeline. The hardware, the grippers, the sensing, and the software architecture are all still open, and the project runs through the year.",
     sections: [
       {
-        title: "Why this problem",
-        text: "The project starts from the cost of processing apparel returns. Sorting, inspecting, cleaning, and repackaging garments by hand can make resale uneconomical and contribute to waste. We want to explore whether robotic handling can make more of those garments practical to restock.",
+        title: "Why clothing is hard",
+        text: "Clothes have no fixed shape. Pulled off a pile, the same shirt can look completely different from one grasp to the next, and the things you need to see in order to identify or inspect it, a waistband, a sleeve, a tag, a stain or a hole, are usually the things that end up hidden. The robot cannot classify a garment until it has first manipulated it into a position where those features are visible.\n\nMost of the prior work we found demonstrates one skill at a time: grasping and spreading a single item, or folding one that has already been laid out flat. What makes this project harder is the chain, where every step depends on what the step before it saw.",
       },
       {
-        title: "The manipulation challenge",
-        text: "The intended sequence is to open a box, separate one garment from a pile, identify it, check for defects, and fold and repack it. Vision must support both garment classification and condition assessment.\n\nCloth has no fixed shape or reliable grasp point. Folding remains an open research problem, and two arms sharing a workspace must coordinate which part of the garment each one holds.",
+        title: "The pipeline",
+        text: "We defined the robot’s job as a sequence: take a garment from the pile, check that it only picked up one, arrange it so it can be seen properly, identify it, inspect it for defects, and then decide what happens to it. Small items like socks get folded, large ones like shirts get hung, and both get sorted. Anything with a defect goes to a rejection pile.\n\nThe branch we care most about is the one where the robot is unsure. Anything it cannot identify or inspect confidently, and anything it fails to handle after a set number of retries, goes to a manual-review bin instead of being guessed at. For this application a system that knows what it cannot do is worth more than one that is confidently wrong.",
       },
       {
-        title: "My technical focus",
-        text: "I want to develop practical experience with reinforcement learning and imitation learning for manipulation, transferring policies from simulation to hardware, and coordinating two arms on a shared object. Garment classification and defect detection are also part of the learning goals. These learning goals will help us narrow the scope as the project develops.",
+        title: "What we are aiming at",
+        text: "The requirements set the targets we will be measured against. The headline ones are to run the full pipeline on at least 70% of garments with no human intervention, and to reach the correct final outcome, sorted, rejected, or manual review, for 90% of them. The acceptance test is a pile of at least ten garments across four categories, placed in configurations we have not practiced on, with at least one defective item in it.\n\nWe have agreed to prioritize a complete path through the pipeline on a small set of garments over doing any single step well. Choosing the hardware and getting that first end-to-end slice working is what comes next.",
       },
     ],
     facts: [
-      { value: "2 arms", label: "Shared workspace" },
-      { value: "RL + IL", label: "Learning methods to explore" },
-      { value: "Cloth", label: "Deformable, no fixed grasp" },
+      { value: "5 categories", label: "Shirts, pants, shorts, socks, underwear" },
+      { value: "70%", label: "Target: full pipeline, no human help" },
+      { value: "Manual review", label: "Where anything uncertain goes" },
     ],
   },
   {

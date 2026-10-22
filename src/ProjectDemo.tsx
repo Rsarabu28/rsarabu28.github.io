@@ -17,7 +17,7 @@ export default function ProjectDemo({ project }: { project: Project }) {
           preload="none"
           poster={asset(demo.poster)}
           style={{ aspectRatio: demo.aspectRatio }}
-          aria-label={`${project.name}: original hardware demonstration, ${demo.duration}, silent`}
+          aria-label={`${project.name}: ${demo.badge ? demo.badge.toLowerCase() : "original hardware demonstration"}, ${demo.duration}, silent`}
         >
           <source src={asset(demo.video)} type="video/mp4" />
           Your browser does not support this video.{" "}
@@ -26,7 +26,7 @@ export default function ProjectDemo({ project }: { project: Project }) {
         <figcaption>{demo.caption}</figcaption>
       </figure>
       <div className="project-demo-notes">
-        <p className="eyebrow">HARDWARE DEMO · {demo.duration}</p>
+        <p className="eyebrow">{demo.badge ?? "HARDWARE DEMO"} · {demo.duration}</p>
         <h2>{demo.title}</h2>
         {demo.observations.map((observation) => (
           <div className="demo-observation" key={observation.title}>
