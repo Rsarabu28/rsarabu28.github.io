@@ -123,7 +123,7 @@ export const experience = [
 export const projects: Project[] = [
   {
     slug: "arm-adillo",
-    name: "Arm-adillo",
+    name: "Arm-adillo Robotic Manipulator",
     category: "Locomotion + manipulation · Personal project",
     year: "2026",
     visual: "armadillo",
@@ -217,6 +217,10 @@ export const projects: Project[] = [
       { value: "53 cm", label: "Farthest pickup in simulation" },
     ],
     links: [
+      {
+        label: "Devlog: Arm-adillo week 1",
+        url: "https://www.youtube.com/watch?v=OCEDUJ_FHkE",
+      },
       {
         label: "SO-101 arm (LeRobot)",
         url: "https://github.com/huggingface/lerobot",

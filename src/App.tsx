@@ -662,6 +662,45 @@ function TrikeMedia() {
   );
 }
 
+function ArmadilloVideo() {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <section className="armadillo-video">
+      <h2>The devlog</h2>
+      <p>
+        I’m recording what I work on each week. The first one covers why an arm
+        would curl up at all, and how the simulation got from a single hinge to
+        something that rolls.
+      </p>
+      <div className="video-embed">
+        {playing ? (
+          <iframe
+            title="How can a robot arm move without a mobile base? Arm-adillo Week 1 by Ray’s Builds"
+            src="https://www.youtube-nocookie.com/embed/OCEDUJ_FHkE?autoplay=1"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+        ) : (
+          <button className="video-launch" onClick={() => setPlaying(true)}>
+            <Play size={32} strokeWidth={1.5} />
+            <span>Watch week 1</span>
+            <small>7 minutes · Ray’s Builds</small>
+          </button>
+        )}
+      </div>
+      <a
+        className="text-link"
+        href="https://www.youtube.com/watch?v=OCEDUJ_FHkE"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Open video on YouTube <ArrowUpRight size={15} />
+      </a>
+    </section>
+  );
+}
+
 function ProjectDetail() {
   const { slug } = useParams();
   const project = projects.find((item) => item.slug === slug);
@@ -741,6 +780,7 @@ function ProjectDetail() {
             <h2>About the project</h2>
             {project.overview.split("\n\n").map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </section>
+          {project.visual === "armadillo" && <ArmadilloVideo />}
           {project.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
