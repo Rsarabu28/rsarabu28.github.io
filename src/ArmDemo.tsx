@@ -34,9 +34,9 @@ const clamp = (n: number, min: number, max: number) =>
 export default function ArmDemo({ compact = false }: { compact?: boolean }) {
   const gridId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(4);
   const lengths = linkLengths(count);
-  const [angles, setAngles] = useState(homeAngles(2));
+  const [angles, setAngles] = useState(homeAngles(4));
   const anglesRef = useRef(angles);
   const [obstacles, setObstacles] = useState(initialBlocks);
   const [target, setTarget] = useState<Point | null>(null);
